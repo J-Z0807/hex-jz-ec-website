@@ -49,40 +49,7 @@
     </table>
 
     <!-- 分頁bar -->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item" :class="{ disabled: !pagination.has_pre }">
-          <a
-            class="page-link"
-            href="#"
-            aria-label="Previous"
-            @click.prevent="getProducts(pagination.current_page - 1)"
-          >
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li
-          class="page-item"
-          v-for="page in pagination.total_pages"
-          :key="page"
-          :class="{ active: pagination.current_page === page }"
-        >
-          <a class="page-link" href="#" @click.prevent="getProducts(page)">{{
-            page
-          }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: !pagination.has_next }">
-          <a
-            class="page-link"
-            href="#"
-            aria-label="Next"
-            @click.prevent="getProducts(pagination.current_page + 1)"
-          >
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <pagination @runPage="getProducts" />
 
     <!-- Modal -->
     <div
@@ -300,15 +267,19 @@
 
 <script>
 import $ from "jquery";
+import pagination from "../Pagination";
 
 export default {
+  components: {
+    pagination,
+  },
   data() {
     return {
-      products: [],
-      pagination: {},
-      tempProduct: {},
-      isNew: false,
-      isLoading: false,
+      products: [], //載入一開始的表單資料
+      tempProduct: {}, //存放表單內各個暫存資料
+      isNew: false, //是新資料還是舊資料
+      isLoading: false, //是否要有loading動畫(大範圍)
+      // loading動畫(小範圍)
       status: {
         fileUploading: false,
       },
@@ -320,11 +291,11 @@ export default {
       const vm = this;
       vm.isLoading = true;
       vm.$http.get(api).then((response) => {
-        console.log(response);
         vm.products = response.data.products;
         vm.isLoading = false;
 
-        vm.pagination = response.data.pagination;
+        //分頁處理
+        vm.$bus.$emit("page:change", response.data.pagination);
       });
     },
     OpenModal(isNew, item) {
@@ -355,7 +326,7 @@ export default {
         } else {
           $("#productModal").modal("hide");
           vm.getProducts();
-          console.log("新增失敗");
+          vm.$bus.$emit("message:push", response.data.message, "danger");
         }
       });
     },
@@ -374,7 +345,7 @@ export default {
         } else {
           $("#delProductModal").modal("hide");
           vm.getProducts();
-          console.log("刪除失敗");
+          vm.$bus.$emit("message:push", response.data.message, "danger");
         }
       });
     },

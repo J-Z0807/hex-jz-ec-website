@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import Nabar from "./Nabar";
-import Sidebar from "./Sidebar";
+import Nabar from "./layout/Nabar";
+import Sidebar from "./layout/Sidebar";
 import Alert from "./AlertMessage";
 
 export default {
