@@ -9,7 +9,10 @@
 - SCSS
 - BS4
 - Webpack
+<<<<<<< HEAD
 - Font awesome
+=======
+>>>>>>> 5d0d9bf70d7f6fe5cf7f870145454bf25f2a94ad
 
 ``` bash
 # install dependencies
