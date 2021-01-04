@@ -10,6 +10,7 @@
 - BS4
 - Webpack
 - Font awesome
+- localStorage
 
 ``` bash
 # install dependencies
