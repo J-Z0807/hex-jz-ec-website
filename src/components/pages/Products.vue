@@ -19,7 +19,7 @@
           <th width="120">編輯</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="Table_data">
         <tr v-for="item in products" :key="item.id">
           <td>{{ item.category }}</td>
           <td>{{ item.title }}</td>

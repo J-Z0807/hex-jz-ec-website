@@ -7,6 +7,7 @@
         type="text"
         placeholder="Search"
         aria-label="Search"
+        @input="search($event)"
       />
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
@@ -18,6 +19,8 @@
 </template>
 
 <script>
+import $ from "jquery";
+
 export default {
   name: "Nabar",
   data() {
@@ -35,6 +38,13 @@ export default {
         if (response.data.success) {
           vm.$router.push("/login");
         }
+      });
+    },
+    search(e) {
+      let searchValue = event.currentTarget.value.toLowerCase();
+
+      $("#Table_data tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
       });
     },
   },
