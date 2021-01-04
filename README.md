@@ -1,8 +1,7 @@
-# hex-jz-ec-website
+# VUE 出一個電傷網站
 
-> A Vue.js project
-
-## Build Setup
+## 使用的技術
+- 
 
 ``` bash
 # install dependencies
