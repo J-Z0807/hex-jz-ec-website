@@ -50,14 +50,18 @@ export default {
     };
   },
   methods: {
+    //登入
     signin() {
-      const api = `${process.env.API_PATH}/signin`;
+      const api = `${process.env.API_PATH}/admin/signin`;
       const vm = this;
 
       vm.$http.post(api, vm.user).then((response) => {
-        console.log(response.data);
         if (response.data.success) {
-          vm.$router.push("/");
+          const token = response.data.token;
+          const expired = response.data.expired;
+          document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
+
+          vm.$router.push("/admin/products");
         }
       });
     },
