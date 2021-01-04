@@ -4,6 +4,7 @@
 - Vue CLI 3
 - Vue router
 - Vue axios(AJAX) 串接 API
+- Vue-loading-overlay 【動畫載入效果】
 - RWD設計
 - SCSS
 - BS4
