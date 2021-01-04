@@ -1,7 +1,13 @@
 # VUE 出一個電傷網站
 
-## 使用的技術
-- 
+## 使用的技術/套件
+- Vue CLI 3
+- Vue router
+- Vue axios(AJAX) 串接 API
+- RWD設計
+- SCSS
+- BS4
+- Webpack
 
 ``` bash
 # install dependencies
