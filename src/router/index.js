@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import login from '@/components/pages/login'
 import dashboard from '@/components/Dashboard'
 import products from '@/components/pages/Products'
+import CustomerOrder from '@/components/pages/CustomerOrder'
 
 Vue.use(Router)
 
@@ -31,6 +32,19 @@ export default new Router({
           name: 'products',
           component: products,
           meta: {requiresAuth: true}, //需要被導航守衛驗證
+        }
+      ]
+    },
+    {
+      path: '/',
+      name: 'dashboard',
+      component: dashboard,
+      meta: {requiresAuth: true}, //需要被導航守衛驗證
+      children:[
+        {
+          path: 'customer_order',
+          name: 'CustomerOrder',
+          component: CustomerOrder,
         }
       ]
     }

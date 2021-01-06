@@ -87,7 +87,7 @@ export default {
     },
   },
   mounted() {
-    //掛載到Vue的實體上了，若有帳號資料就傳入input裡並且記住帳號的checkbox打勾
+    //元件掛載到Vue的實體上了，若有帳號資料就傳入input裡並且記住帳號的checkbox打勾
     if (localStorage.getItem("Account") != null) {
       this.user.username = localStorage.getItem("Account");
       document.querySelector("#remember_Account").checked = true;
