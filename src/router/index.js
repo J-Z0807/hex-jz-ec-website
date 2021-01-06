@@ -5,7 +5,10 @@ import Router from 'vue-router'
 import login from '@/components/pages/login'
 import dashboard from '@/components/Dashboard'
 import products from '@/components/pages/Products'
+import Orders from '@/components/pages/Orders'
+import Coupon from '@/components/pages/Coupon'
 import CustomerOrder from '@/components/pages/CustomerOrder'
+import CustomerCheckout from '@/components/pages/CustomerCheckout'
 
 Vue.use(Router)
 
@@ -32,6 +35,18 @@ export default new Router({
           name: 'products',
           component: products,
           meta: {requiresAuth: true}, //需要被導航守衛驗證
+        },
+        {
+          path: 'orders',
+          name: 'Orders',
+          component: Orders,
+          meta: {requiresAuth: true}, //需要被導航守衛驗證
+        },
+        {
+          path: 'coupon',
+          name: 'Coupon',
+          component: Coupon,
+          meta: {requiresAuth: true}, //需要被導航守衛驗證
         }
       ]
     },
@@ -45,6 +60,11 @@ export default new Router({
           path: 'customer_order',
           name: 'CustomerOrder',
           component: CustomerOrder,
+        },
+        {
+          path: 'customer_checkout/:orderId',
+          name: 'CustomerCheckout',
+          component: CustomerCheckout,
         }
       ]
     }

@@ -12,21 +12,21 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/products">
+            <router-link class="nav-link list-hover" to="/admin/products">
               <i class="fas fa-box-open"></i>
-              產品列表
+              <span class="link">產品列表</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/products">
+            <router-link class="nav-link list-hover" to="/admin/orders">
               <i class="far fa-list-alt"></i>
-              訂單列表
+              <span class="link">訂單列表</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/products">
+            <router-link class="nav-link list-hover" to="/admin/coupon">
               <i class="fas fa-ticket-alt"></i>
-              優惠劵
+              <span class="link">優惠劵</span>
             </router-link>
           </li>
         </ul>
@@ -41,9 +41,9 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <router-link class="nav-link text-primary" to="/customer_order">
+            <router-link class="nav-link list-hover" to="/customer_order">
               <i class="fas fa-shopping-cart"></i>
-              模擬訂單
+              <span class="link">模擬訂單</span>
             </router-link>
           </li>
         </ul>
@@ -51,3 +51,11 @@
     </nav>
   </div>
 </template>
+
+<style scoped lang="scss">
+.list-hover:hover {
+  .link {
+    color: blue;
+  }
+}
+</style>

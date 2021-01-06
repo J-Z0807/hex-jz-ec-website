@@ -258,13 +258,13 @@
           <validation-provider rules="required" v-slot="{ errors, classes }">
             <div class="form-group">
               <!-- 輸入框 -->
-              <label for="phone">收件人電話</label
+              <label for="usertel">收件人電話</label
               ><span class="text-danger"> * </span>
               <input
-                id="phone"
-                type="text"
-                name="phone"
-                v-model="form.user.phone"
+                id="usertel"
+                type="tel"
+                name="tel"
+                v-model="form.user.tel"
                 class="form-control"
                 :class="classes"
               />
@@ -436,8 +436,7 @@ export default {
 
       vm.$http.post(url, { data: order }).then((response) => {
         if (response.data.success) {
-          vm.$bus.$emit("message:push", response.data.message, "success");
-          this.getCart();
+          vm.$router.push(`/customer_checkout/${response.data.orderId}`);
         } else {
           vm.$bus.$emit("message:push", response.data.message, "danger");
         }
