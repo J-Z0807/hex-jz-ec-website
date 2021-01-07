@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Nabar />
+    <header>
+      <Nabar />
+    </header>
+
     <Alert />
     <div class="container-fluid">
       <div class="row">
@@ -14,8 +17,8 @@
 </template>
 
 <script>
-import Nabar from "./layout/Nabar";
-import Sidebar from "./layout/Sidebar";
+import Nabar from "./layout/back/Nabar";
+import Sidebar from "./layout/back/Sidebar";
 import Alert from "./AlertMessage";
 
 export default {

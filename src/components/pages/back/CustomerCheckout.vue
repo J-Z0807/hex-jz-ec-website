@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import Alert from "../AlertMessage";
+import Alert from "../../AlertMessage";
 
 export default {
   components: {

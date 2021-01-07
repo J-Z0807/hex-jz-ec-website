@@ -314,8 +314,8 @@
 
 <script>
 import $ from "jquery";
-import pagination from "../Pagination";
-import Alert from "../AlertMessage";
+import pagination from "../../Pagination";
+import Alert from "../../AlertMessage";
 
 export default {
   components: {
@@ -436,7 +436,7 @@ export default {
 
       vm.$http.post(url, { data: order }).then((response) => {
         if (response.data.success) {
-          vm.$router.push(`/customer_checkout/${response.data.orderId}`);
+          vm.$router.push(`/admin/customer_checkout/${response.data.orderId}`);
         } else {
           vm.$bus.$emit("message:push", response.data.message, "danger");
         }

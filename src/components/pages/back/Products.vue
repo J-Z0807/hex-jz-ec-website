@@ -78,178 +78,205 @@
             <div class="row">
               <validation-observer class="col-sm-4">
                 <validation-provider
-                    rules="required"
-                    v-slot="{ errors, classes }"
+                  rules="required"
+                  v-slot="{ errors, classes }"
                 >
-                    <div class="form-group">
-                        <!-- 輸入框 -->
-                        <label for="image">輸入圖片網址</label
-                        ><span class="text-danger"> * </span>
-                        <input
-                        id="image"
-                        type="text"
-                        v-model="tempProduct.imageUrl"
-                        class="form-control"
-                        :class="classes"
-                        placeholder="請輸入圖片連結"
-                      />
-                        <!-- 錯誤訊息 -->
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                    </div>
-                </validation-provider>
-      
                   <div class="form-group">
-                    <label for="customFile"
-                      >或 上傳圖片
-                      <i
-                        class="fas fa-spinner fa-spin"
-                        v-if="status.fileUploading"
-                      ></i>
-                    </label>
+                    <!-- 輸入框 -->
+                    <label for="image">輸入圖片網址</label
+                    ><span class="text-danger"> * </span>
                     <input
-                      type="file"
-                      id="customFile"
+                      id="image"
+                      type="text"
+                      v-model="tempProduct.imageUrl"
                       class="form-control"
-                      ref="files"
-                      @change="uploadFile()"
+                      :class="classes"
+                      placeholder="請輸入圖片連結"
                     />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
                   </div>
-                  <img class="img-fluid" :src="tempProduct.imageUrl" />
+                </validation-provider>
+
+                <div class="form-group">
+                  <label for="customFile"
+                    >或 上傳圖片
+                    <i
+                      class="fas fa-spinner fa-spin"
+                      v-if="status.fileUploading"
+                    ></i>
+                  </label>
+                  <input
+                    type="file"
+                    id="customFile"
+                    class="form-control"
+                    ref="files"
+                    @change="uploadFile()"
+                  />
+                </div>
+                <img class="img-fluid" :src="tempProduct.imageUrl" />
               </validation-observer>
 
               <validation-observer class="col-sm-8">
-                  <validation-provider rules="required" v-slot="{ errors, classes }">
-                    <div class="form-group">
-                        <!-- 輸入框 -->
-                        <label for="title">標題</label
-                        ><span class="text-danger"> * </span>
-                        <input
-                        id="title"
-                        type="text"
-                        v-model="tempProduct.title"
-                        class="form-control"
-                        :class="classes"
-                        placeholder="請輸入標題"
-                      />
-                        <!-- 錯誤訊息 -->
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                    </div>
-                  </validation-provider>
-
-                  <div class="form-row">
-                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
-                        <!-- 輸入框 -->
-                        <label for="category">分類</label
-                        ><span class="text-danger"> * </span>
-                        <input
-                          id="category"
-                          type="text"
-                          v-model="tempProduct.category"
-                          class="form-control"
-                          :class="classes"
-                          placeholder="請輸入分類"
-                        />
-                        <!-- 錯誤訊息 -->
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                    </validation-provider>
-
-                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
-                        <!-- 輸入框 -->
-                        <label for="price">單位</label>
-                        <span class="text-danger"> * </span>
-                        <input
-                          id="unit"
-                          type="text"
-                          v-model="tempProduct.unit"
-                          class="form-control"
-                          :class="classes"
-                          placeholder="請輸入單位"
-                        />
-                        <!-- 錯誤訊息 -->
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                    </validation-provider>
-                  </div>
-
-                  <div class="form-row">
-                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
-                        <!-- 輸入框 -->
-                        <label for="origin_price">原價</label>
-                        <span class="text-danger"> * </span>
-                        <input
-                          id="origin_price"
-                          type="number"
-                          v-model="tempProduct.origin_price"
-                          class="form-control"
-                          :class="classes"
-                          placeholder="請輸入原價"
-                        />
-                        <!-- 錯誤訊息 -->
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                    </validation-provider>
-
-                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
-                        <!-- 輸入框 -->
-                        <label for="price">售價</label>
-                        <span class="text-danger"> * </span>
-                        <input
-                          id="price"
-                          type="number"
-                          v-model="tempProduct.price"
-                          class="form-control"
-                          :class="classes"
-                          placeholder="請輸入售價"
-                        />
-                        <!-- 錯誤訊息 -->
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                    </validation-provider>
-                  </div>
-
-                  <hr />
-                  <validation-provider class="form-group" rules="required" v-slot="{ errors, classes }">
-                      <!-- 輸入框 -->
-                      <label for="description">產品描述</label>
-                      <span class="text-danger"> * </span>
-                      <textarea
-                          id="description"
-                          v-model="tempProduct.description"
-                          class="form-control"
-                          :class="classes"
-                          placeholder="請輸入產品描述"
-                      ></textarea>
-                      <!-- 錯誤訊息 -->
-                      <span class="invalid-feedback">{{ errors[0] }}</span>
-                  </validation-provider>
-
-                  <validation-provider class="form-group" rules="required" v-slot="{ errors, classes }">
-                      <!-- 輸入框 -->
-                      <label for="content">說明內容</label>
-                      <span class="text-danger"> * </span>
-                      <textarea
-                          id="content"
-                          v-model="tempProduct.content"
-                          class="form-control"
-                          :class="classes"
-                          placeholder="請輸入產品說明內容"
-                      ></textarea>
-                      <!-- 錯誤訊息 -->
-                      <span class="invalid-feedback">{{ errors[0] }}</span>
-                  </validation-provider>
-
+                <validation-provider
+                  rules="required"
+                  v-slot="{ errors, classes }"
+                >
                   <div class="form-group">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        v-model="tempProduct.is_enabled"
-                        :true-value="1"
-                        :false-value="0"
-                        id="is_enabled"
-                      />
-                      <label class="form-check-label" for="is_enabled">
-                        是否啟用
-                      </label>
-                    </div>
+                    <!-- 輸入框 -->
+                    <label for="title">標題</label
+                    ><span class="text-danger"> * </span>
+                    <input
+                      id="title"
+                      type="text"
+                      v-model="tempProduct.title"
+                      class="form-control"
+                      :class="classes"
+                      placeholder="請輸入標題"
+                    />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
                   </div>
+                </validation-provider>
+
+                <div class="form-row">
+                  <validation-provider
+                    class="form-group col-md-6"
+                    rules="required"
+                    v-slot="{ errors, classes }"
+                  >
+                    <!-- 輸入框 -->
+                    <label for="category">分類</label
+                    ><span class="text-danger"> * </span>
+                    <input
+                      id="category"
+                      type="text"
+                      v-model="tempProduct.category"
+                      class="form-control"
+                      :class="classes"
+                      placeholder="請輸入分類"
+                    />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+
+                  <validation-provider
+                    class="form-group col-md-6"
+                    rules="required"
+                    v-slot="{ errors, classes }"
+                  >
+                    <!-- 輸入框 -->
+                    <label for="price">單位</label>
+                    <span class="text-danger"> * </span>
+                    <input
+                      id="unit"
+                      type="text"
+                      v-model="tempProduct.unit"
+                      class="form-control"
+                      :class="classes"
+                      placeholder="請輸入單位"
+                    />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+                </div>
+
+                <div class="form-row">
+                  <validation-provider
+                    class="form-group col-md-6"
+                    rules="required"
+                    v-slot="{ errors, classes }"
+                  >
+                    <!-- 輸入框 -->
+                    <label for="origin_price">原價</label>
+                    <span class="text-danger"> * </span>
+                    <input
+                      id="origin_price"
+                      type="number"
+                      v-model="tempProduct.origin_price"
+                      class="form-control"
+                      :class="classes"
+                      placeholder="請輸入原價"
+                    />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+
+                  <validation-provider
+                    class="form-group col-md-6"
+                    rules="required"
+                    v-slot="{ errors, classes }"
+                  >
+                    <!-- 輸入框 -->
+                    <label for="price">售價</label>
+                    <span class="text-danger"> * </span>
+                    <input
+                      id="price"
+                      type="number"
+                      v-model="tempProduct.price"
+                      class="form-control"
+                      :class="classes"
+                      placeholder="請輸入售價"
+                    />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+                </div>
+
+                <hr />
+                <validation-provider
+                  class="form-group"
+                  rules="required"
+                  v-slot="{ errors, classes }"
+                >
+                  <!-- 輸入框 -->
+                  <label for="description">產品描述</label>
+                  <span class="text-danger"> * </span>
+                  <textarea
+                    id="description"
+                    v-model="tempProduct.description"
+                    class="form-control"
+                    :class="classes"
+                    placeholder="請輸入產品描述"
+                  ></textarea>
+                  <!-- 錯誤訊息 -->
+                  <span class="invalid-feedback">{{ errors[0] }}</span>
+                </validation-provider>
+
+                <validation-provider
+                  class="form-group"
+                  rules="required"
+                  v-slot="{ errors, classes }"
+                >
+                  <!-- 輸入框 -->
+                  <label for="content">說明內容</label>
+                  <span class="text-danger"> * </span>
+                  <textarea
+                    id="content"
+                    v-model="tempProduct.content"
+                    class="form-control"
+                    :class="classes"
+                    placeholder="請輸入產品說明內容"
+                  ></textarea>
+                  <!-- 錯誤訊息 -->
+                  <span class="invalid-feedback">{{ errors[0] }}</span>
+                </validation-provider>
+
+                <div class="form-group">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      v-model="tempProduct.is_enabled"
+                      :true-value="1"
+                      :false-value="0"
+                      id="is_enabled"
+                    />
+                    <label class="form-check-label" for="is_enabled">
+                      是否啟用
+                    </label>
+                  </div>
+                </div>
               </validation-observer>
             </div>
           </div>
@@ -325,7 +352,7 @@
 
 <script>
 import $ from "jquery";
-import pagination from "../Pagination";
+import pagination from "../../Pagination";
 
 export default {
   components: {

@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <span class="navbar-brand col-sm-3 col-md-2 mr-0 user-select-none"
-        >Quality Car</span
+        >Quality Store</span
       >
       <input
         class="form-control form-control-dark w-100"

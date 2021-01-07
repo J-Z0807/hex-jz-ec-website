@@ -12,19 +12,31 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <router-link class="nav-link list-hover" to="/admin/products" active-class="active">
+            <router-link
+              class="nav-link list-hover"
+              to="/admin/products"
+              active-class="active"
+            >
               <i class="fas fa-box-open"></i>
               <span class="link">產品列表</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link list-hover" to="/admin/orders" active-class="active">
+            <router-link
+              class="nav-link list-hover"
+              to="/admin/orders"
+              active-class="active"
+            >
               <i class="far fa-list-alt"></i>
               <span class="link">訂單列表</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link list-hover" to="/admin/coupon" active-class="active">
+            <router-link
+              class="nav-link list-hover"
+              to="/admin/coupon"
+              active-class="active"
+            >
               <i class="fas fa-ticket-alt"></i>
               <span class="link">優惠劵</span>
             </router-link>
@@ -41,7 +53,11 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <router-link class="nav-link list-hover" to="/customer_order" active-class="active">
+            <router-link
+              class="nav-link list-hover"
+              to="/admin/customer_order"
+              active-class="active"
+            >
               <i class="fas fa-shopping-cart"></i>
               <span class="link">模擬訂單</span>
             </router-link>

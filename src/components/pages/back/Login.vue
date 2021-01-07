@@ -26,7 +26,7 @@
       />
       <div class="checkbox mb-3">
         <label>
-          <input type="checkbox" id="remember_Account" /> Remember me
+          <input type="checkbox" id="remember_Account" /> 記住帳號
         </label>
       </div>
       <button
@@ -34,16 +34,16 @@
         type="submit"
         @keydown.enter="signin"
       >
-        Sign in
+        登入
       </button>
       <Alert />
-      <p class="mt-5 mb-3 text-muted">&copy; 2021 優質汽車網</p>
+      <p class="mt-5 mb-3 text-muted">&copy; 2021 優質商店</p>
     </form>
   </div>
 </template>
 
 <script>
-import Alert from "../AlertMessage";
+import Alert from "../../AlertMessage";
 
 export default {
   name: "login",

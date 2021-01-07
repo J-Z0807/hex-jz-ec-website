@@ -1,26 +1,32 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 //官方的文件
 
-import login from '@/components/pages/login'
-import dashboard from '@/components/Dashboard'
-import products from '@/components/pages/Products'
-import Orders from '@/components/pages/Orders'
-import Coupon from '@/components/pages/Coupon'
-import CustomerOrder from '@/components/pages/CustomerOrder'
-import CustomerCheckout from '@/components/pages/CustomerCheckout'
+//後台
+import dashboard from '@/components/Dashboard';
 
-Vue.use(Router)
+import login from '@/components/pages/back/login';
+import products from '@/components/pages/back/Products';
+import Orders from '@/components/pages/back/Orders';
+import Coupon from '@/components/pages/back/Coupon';
+import CustomerOrder from '@/components/pages/back/CustomerOrder';
+import CustomerCheckout from '@/components/pages/back/CustomerCheckout';
+
+//前台
+import Layout from '@/components/Layout';
+import Home from '@/components/pages/front/Home';
+
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       //防止用戶跳到不存在的頁面
       path: '*',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
-      path: '/login',
+      path: '/admin/login',
       name: 'login',
       component: login
     },
@@ -56,15 +62,7 @@ export default new Router({
             requiresAuth: true, //需要被導航守衛驗證
             isSearchBar: true, //是否要有搜尋框
           }, 
-        }
-      ]
-    },
-    {
-      path: '/',
-      name: 'dashboard',
-      component: dashboard,
-      meta: {requiresAuth: true}, //需要被導航守衛驗證
-      children:[
+        },
         {
           path: 'customer_order',
           name: 'CustomerOrder',
@@ -82,6 +80,18 @@ export default new Router({
           }
         }
       ]
-    }
+    },
+    {
+      path: '/',
+      name: 'Layout',
+      component: Layout,
+      children:[
+        {
+          path: 'home',
+          name: 'Home',
+          component: Home, 
+        }
+      ]
+    },
   ]
 })
