@@ -76,128 +76,181 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="image">輸入圖片網址</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="image"
-                    v-model="tempProduct.imageUrl"
-                    placeholder="請輸入圖片連結"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="customFile"
-                    >或 上傳圖片
-                    <i
-                      class="fas fa-spinner fa-spin"
-                      v-if="status.fileUploading"
-                    ></i>
-                  </label>
-                  <input
-                    type="file"
-                    id="customFile"
-                    class="form-control"
-                    ref="files"
-                    @change="uploadFile()"
-                  />
-                </div>
-                <img class="img-fluid" :src="tempProduct.imageUrl" />
-              </div>
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <label for="title">標題</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    v-model="tempProduct.title"
-                    placeholder="請輸入標題"
-                  />
-                </div>
-
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="category">分類</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="category"
-                      v-model="tempProduct.category"
-                      placeholder="請輸入分類"
-                    />
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="price">單位</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="unit"
-                      v-model="tempProduct.unit"
-                      placeholder="請輸入單位"
-                    />
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="origin_price">原價</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="origin_price"
-                      v-model="tempProduct.origin_price"
-                      placeholder="請輸入原價"
-                    />
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="price">售價</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="price"
-                      v-model="tempProduct.price"
-                      placeholder="請輸入售價"
-                    />
-                  </div>
-                </div>
-                <hr />
-                <div class="form-group">
-                  <label for="description">產品描述</label>
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    id="description"
-                    v-model="tempProduct.description"
-                    placeholder="請輸入產品描述"
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="content">說明內容</label>
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    id="content"
-                    v-model="tempProduct.content"
-                    placeholder="請輸入產品說明內容"
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      v-model="tempProduct.is_enabled"
-                      :true-value="1"
-                      :false-value="0"
-                      id="is_enabled"
-                    />
-                    <label class="form-check-label" for="is_enabled">
-                      是否啟用
+              <validation-observer class="col-sm-4">
+                <validation-provider
+                    rules="required"
+                    v-slot="{ errors, classes }"
+                >
+                    <div class="form-group">
+                        <!-- 輸入框 -->
+                        <label for="image">輸入圖片網址</label
+                        ><span class="text-danger"> * </span>
+                        <input
+                        id="image"
+                        type="text"
+                        v-model="tempProduct.imageUrl"
+                        class="form-control"
+                        :class="classes"
+                        placeholder="請輸入圖片連結"
+                      />
+                        <!-- 錯誤訊息 -->
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                    </div>
+                </validation-provider>
+      
+                  <div class="form-group">
+                    <label for="customFile"
+                      >或 上傳圖片
+                      <i
+                        class="fas fa-spinner fa-spin"
+                        v-if="status.fileUploading"
+                      ></i>
                     </label>
+                    <input
+                      type="file"
+                      id="customFile"
+                      class="form-control"
+                      ref="files"
+                      @change="uploadFile()"
+                    />
                   </div>
-                </div>
-              </div>
+                  <img class="img-fluid" :src="tempProduct.imageUrl" />
+              </validation-observer>
+
+              <validation-observer class="col-sm-8">
+                  <validation-provider rules="required" v-slot="{ errors, classes }">
+                    <div class="form-group">
+                        <!-- 輸入框 -->
+                        <label for="title">標題</label
+                        ><span class="text-danger"> * </span>
+                        <input
+                        id="title"
+                        type="text"
+                        v-model="tempProduct.title"
+                        class="form-control"
+                        :class="classes"
+                        placeholder="請輸入標題"
+                      />
+                        <!-- 錯誤訊息 -->
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                    </div>
+                  </validation-provider>
+
+                  <div class="form-row">
+                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+                        <!-- 輸入框 -->
+                        <label for="category">分類</label
+                        ><span class="text-danger"> * </span>
+                        <input
+                          id="category"
+                          type="text"
+                          v-model="tempProduct.category"
+                          class="form-control"
+                          :class="classes"
+                          placeholder="請輸入分類"
+                        />
+                        <!-- 錯誤訊息 -->
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                    </validation-provider>
+
+                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+                        <!-- 輸入框 -->
+                        <label for="price">單位</label>
+                        <span class="text-danger"> * </span>
+                        <input
+                          id="unit"
+                          type="text"
+                          v-model="tempProduct.unit"
+                          class="form-control"
+                          :class="classes"
+                          placeholder="請輸入單位"
+                        />
+                        <!-- 錯誤訊息 -->
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                    </validation-provider>
+                  </div>
+
+                  <div class="form-row">
+                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+                        <!-- 輸入框 -->
+                        <label for="origin_price">原價</label>
+                        <span class="text-danger"> * </span>
+                        <input
+                          id="origin_price"
+                          type="number"
+                          v-model="tempProduct.origin_price"
+                          class="form-control"
+                          :class="classes"
+                          placeholder="請輸入原價"
+                        />
+                        <!-- 錯誤訊息 -->
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                    </validation-provider>
+
+                    <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+                        <!-- 輸入框 -->
+                        <label for="price">售價</label>
+                        <span class="text-danger"> * </span>
+                        <input
+                          id="price"
+                          type="number"
+                          v-model="tempProduct.price"
+                          class="form-control"
+                          :class="classes"
+                          placeholder="請輸入售價"
+                        />
+                        <!-- 錯誤訊息 -->
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                    </validation-provider>
+                  </div>
+
+                  <hr />
+                  <validation-provider class="form-group" rules="required" v-slot="{ errors, classes }">
+                      <!-- 輸入框 -->
+                      <label for="description">產品描述</label>
+                      <span class="text-danger"> * </span>
+                      <textarea
+                          id="description"
+                          v-model="tempProduct.description"
+                          class="form-control"
+                          :class="classes"
+                          placeholder="請輸入產品描述"
+                      ></textarea>
+                      <!-- 錯誤訊息 -->
+                      <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+
+                  <validation-provider class="form-group" rules="required" v-slot="{ errors, classes }">
+                      <!-- 輸入框 -->
+                      <label for="content">說明內容</label>
+                      <span class="text-danger"> * </span>
+                      <textarea
+                          id="content"
+                          v-model="tempProduct.content"
+                          class="form-control"
+                          :class="classes"
+                          placeholder="請輸入產品說明內容"
+                      ></textarea>
+                      <!-- 錯誤訊息 -->
+                      <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        v-model="tempProduct.is_enabled"
+                        :true-value="1"
+                        :false-value="0"
+                        id="is_enabled"
+                      />
+                      <label class="form-check-label" for="is_enabled">
+                        是否啟用
+                      </label>
+                    </div>
+                  </div>
+              </validation-observer>
             </div>
           </div>
           <div class="modal-footer">

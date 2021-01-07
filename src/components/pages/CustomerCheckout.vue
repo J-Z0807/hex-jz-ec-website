@@ -2,6 +2,7 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <Alert />
+    <h1 class="text-center mt-5">訂單確認</h1>
     <div class="my-5 row justify-content-center">
       <form class="col-md-6" @submit.prevent="payOrder()">
         <table class="table">

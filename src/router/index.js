@@ -34,19 +34,28 @@ export default new Router({
           path: 'products',
           name: 'products',
           component: products,
-          meta: {requiresAuth: true}, //需要被導航守衛驗證
+          meta: {
+            requiresAuth: true, //需要被導航守衛驗證
+            isSearchBar: true, //是否要有搜尋框
+          }, 
         },
         {
           path: 'orders',
           name: 'Orders',
           component: Orders,
-          meta: {requiresAuth: true}, //需要被導航守衛驗證
+          meta: {
+            requiresAuth: true, //需要被導航守衛驗證
+            isSearchBar: true, //是否要有搜尋框
+          }, 
         },
         {
           path: 'coupon',
           name: 'Coupon',
           component: Coupon,
-          meta: {requiresAuth: true}, //需要被導航守衛驗證
+          meta: {
+            requiresAuth: true, //需要被導航守衛驗證
+            isSearchBar: true, //是否要有搜尋框
+          }, 
         }
       ]
     },
@@ -60,11 +69,17 @@ export default new Router({
           path: 'customer_order',
           name: 'CustomerOrder',
           component: CustomerOrder,
+          meta:{
+            isSearchBar: false, //是否要有搜尋框
+          }
         },
         {
           path: 'customer_checkout/:orderId',
           name: 'CustomerCheckout',
           component: CustomerCheckout,
+          meta:{
+            isSearchBar: false, //是否要有搜尋框
+          }
         }
       ]
     }

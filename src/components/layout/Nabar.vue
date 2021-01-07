@@ -10,6 +10,7 @@
         placeholder="Search"
         aria-label="Search"
         @input="search($event)"
+        v-if="this.$route.meta.isSearchBar"
       />
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
@@ -27,11 +28,6 @@ import $ from "jquery";
 
 export default {
   name: "Nabar",
-  data() {
-    return {
-      msg: "Welcome to Dashboard",
-    };
-  },
   methods: {
     //登出
     signout() {

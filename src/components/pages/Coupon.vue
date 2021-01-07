@@ -76,50 +76,72 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="title">標題</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    placeholder="請輸入標題"
-                    v-model="tempCoupon.title"
-                  />
-                </div>
+              <validation-observer class="col-sm-12" v-slot="{ invalid }">
+                <validation-provider rules="required" v-slot="{ errors, classes }">
+                  <div class="form-group">
+                    <!-- 輸入框 -->
+                    <label for="title">標題</label>
+                    <span class="text-danger"> * </span>
+                    <input
+                      id="title"
+                      type="text"
+                      v-model="tempCoupon.title"
+                      class="form-control"
+                      :class="classes"
+                    />
+                    <!-- 錯誤訊息 -->
+                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </div>
+                </validation-provider>
 
                 <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="percent">折價</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="percent"
-                      placeholder="請輸入折價(%)"
-                      v-model="tempCoupon.percent"
-                    />
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="code">優惠碼</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="code"
-                      placeholder="請輸入優惠碼"
-                      v-model="tempCoupon.code"
-                    />
-                  </div>
+                  <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+                      <!-- 輸入框 -->
+                      <label for="percent">折價</label>
+                      <span class="text-danger"> * </span>
+                      <input
+                        id="percent"
+                        type="text"
+                        v-model="tempCoupon.percent"
+                        class="form-control"
+                        placeholder="請輸入折價(%)"
+                        :class="classes"
+                      />
+                      <!-- 錯誤訊息 -->
+                      <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
+
+                  <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">                  
+                      <!-- 輸入框 -->
+                      <label for="code">優惠碼</label>
+                      <span class="text-danger"> * </span>
+                      <input
+                        id="code"
+                        type="text"
+                        v-model="tempCoupon.code"
+                        class="form-control"
+                        placeholder="請輸入優惠碼"
+                        :class="classes"
+                      />
+                      <!-- 錯誤訊息 -->
+                      <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
                 </div>
                 <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="due_date">到期日</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="due_date"
-                      v-model="tempCoupon.due_date"
-                    />
-                  </div>
+                  <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+                      <!-- 輸入框 -->
+                      <label for="due_date">到期日</label>
+                      <span class="text-danger"> * </span>
+                      <input
+                        id="due_date"
+                        type="date"
+                        v-model="tempCoupon.due_date"
+                        class="form-control"
+                        :class="classes"
+                      />
+                      <!-- 錯誤訊息 -->
+                      <span class="invalid-feedback">{{ errors[0] }}</span>
+                  </validation-provider>
                 </div>
                 <div class="form-group">
                   <div class="form-check">
@@ -136,7 +158,7 @@
                     </label>
                   </div>
                 </div>
-              </div>
+              </validation-observer>
             </div>
           </div>
           <div class="modal-footer">
