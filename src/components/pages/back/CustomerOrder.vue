@@ -7,8 +7,9 @@
         <div class="card border-0 shadow-sm">
           <div
             style="
-              height: 150px;
-              background-size: cover;
+              height: 300px;
+              background-size: contain;
+              background-repeat: no-repeat;
               background-position: center;
             "
             :style="{ backgroundImage: `url(${item.imageUrl})` }"
@@ -21,15 +22,18 @@
               <a href="#" class="text-dark">{{ item.title }}</a>
             </h5>
             <p class="card-text">{{ item.content }}</p>
-            <div class="d-flex justify-content-between align-items-baseline">
-              <div class="h5" v-if="!item.price">
-                {{ item.origin_price }} 元
-              </div>
-              <del class="h6" v-if="item.price"
-                >原價 {{ item.origin_price }} 元</del
-              >
-              <div class="h5" v-if="item.price">
-                現在只要 {{ item.price }} 元
+            <div
+              class="d-flex align-items-baseline"
+              :class="{
+                'justify-content-end': item.origin_price == item.price,
+                'justify-content-between': item.origin_price != item.price,
+              }"
+            >
+              <del class="h6" v-if="item.origin_price != item.price">{{
+                item.origin_price | currency
+              }}</del>
+              <div class="h5">
+                {{ item.price | currency }}
               </div>
             </div>
           </div>

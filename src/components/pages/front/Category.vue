@@ -1,0 +1,167 @@
+<template>
+  <div>
+    <div class="product_detail content">
+      <div class="container-fluid bannerimg">
+        <h1 class="text-white title text-center py-4">
+          好東西都在Quality Store
+        </h1>
+        <nav aria-label="breadcrumb" class="breadmark w-50 m-auto">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">首頁</a></li>
+            <li aria-current="page" class="breadcrumb-item active">
+              {{ category_str }}
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <Commodity />
+  </div>
+</template>
+
+<script>
+import Commodity from "../../Commodity";
+
+export default {
+  name: "login",
+  components: {
+    Commodity,
+  },
+  data() {
+    return {
+      category_str: "",
+      path: this.$router.currentRoute.path,
+    };
+  },
+  methods: {
+    getProducts() {
+      const vm = this;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/products/all`;
+
+      vm.$http.get(url).then((response) => {
+        //商品處理
+        vm.$bus.$emit("data:commodity", response.data.products);
+      });
+    },
+    getCommodityType() {
+      const vm = this;
+      //取得類型
+      vm.category_str = vm.$route.path;
+      vm.category_str = decodeURI(
+        vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
+      );
+    },
+  },
+  created() {
+    this.getProducts();
+    this.getCommodityType();
+  },
+  watch: {
+    $route(to, from) {
+      this.path = this.$router.currentRoute.path;
+      this.getCommodityType();
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.title {
+  font-size: 72px;
+  font-family: cursive;
+  position: absolute;
+  white-space: nowrap;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.breadmark {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bannerimg {
+  height: 400px;
+  background-image: url("https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OXx8c2t5fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=60");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  margin-top: 70px;
+}
+
+.breadcrumb .breadcrumb-item {
+  color: #000;
+  font-size: 1.1rem;
+  a {
+    text-decoration: none;
+  }
+}
+
+.img-cover {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center center !important;
+
+  height: 95vh;
+}
+
+.CommodityArea {
+  padding-top: 70px;
+  padding-bottom: 50px;
+}
+
+.product-label {
+  background-color: rgb(241, 12, 192);
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  left: 30px;
+  top: 10px;
+  border-radius: 5px;
+}
+
+.card {
+  cursor: pointer;
+
+  .card-body {
+    border: 1px solid lightgray;
+    border-top: 0;
+  }
+
+  .hover-more {
+    font-size: 26px;
+    visibility: hidden;
+
+    i {
+      &:hover {
+        font-size: 30px;
+        color: lightblue !important;
+      }
+    }
+  }
+
+  .card-img-top {
+    background-size: contain !important;
+    background-position: center !important;
+    height: 300px;
+    transition: 0.5s;
+  }
+
+  &:hover {
+    .card-img-top {
+      //加上半透明黑色遮罩
+      background-color: rgba(0, 0, 0, 0.3) !important;
+      background-blend-mode: multiply !important;
+    }
+
+    .hover-more {
+      visibility: visible;
+    }
+  }
+}
+</style>

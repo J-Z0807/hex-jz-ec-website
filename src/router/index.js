@@ -15,6 +15,7 @@ import CustomerCheckout from '@/components/pages/back/CustomerCheckout';
 //前台
 import Layout from '@/components/Layout';
 import Home from '@/components/pages/front/Home';
+import Category from '@/components/pages/front/Category';
 
 Vue.use(Router);
 
@@ -90,6 +91,11 @@ export default new Router({
           path: 'home',
           name: 'Home',
           component: Home, 
+        },
+        {
+          path:'category/:categoryName',
+          name: 'category',
+          component: Category,
         }
       ]
     },

@@ -66,66 +66,46 @@
       ></a>
     </div>
 
-    <div class="container mb-5">
-      <h1 class="text-center CommodityArea" id="CommodityArea">
-        <i class="fas fa-fire text-warning"></i>
-        <i>熱銷商品</i>
-      </h1>
-
-      <div class="row">
-        <div class="card col-3 px-0">
-          <div class="card-header p-0">
-            <span class="product-label">熱銷中</span>
-            <div
-              class="card-img-top img-cover"
-              style="
-                background: url('https://www.17sucai.com/preview/1750622/2019-08-06/rapidshop/img/product/2.jpg');
-              "
-            >
-              <div
-                class="hover-more d-flex justify-content-center h-100 align-items-center"
-              >
-                <i class="fas fa-heart text-white mr-5" title="加入收藏"></i>
-                <i
-                  class="fas fa-cart-plus text-white mr-5"
-                  title="加入購物車"
-                ></i>
-                <i
-                  class="fas fa-search text-white"
-                  title="查看詳細商品資訊"
-                ></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="card-body">
-            <span class="badge badge-secondary float-right">上衣</span>
-            <h4 class="card-title">華麗上衣</h4>
-            <p class="card-text">這是一件很棒的上衣</p>
-
-            <div class="d-flex justify-content-between align-items-baseline">
-              <del class="h6 text-secondary">$2,300</del>
-              <div class="h5">$1,600</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Commodity />
   </div>
 </template>
 
 <script>
-import Alert from "../../AlertMessage";
+import Commodity from "../../Commodity";
 
 export default {
   name: "login",
   components: {
-    Alert,
+    Commodity,
   },
   data() {
-    return {};
+    return {
+      category_str: "",
+    };
   },
-  methods: {},
+  methods: {
+    getProducts(page = 1) {
+      const vm = this;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/products?page=${page}`;
+
+      vm.$http.get(url).then((response) => {
+        //商品處理
+        vm.$bus.$emit("data:commodity", response.data.products);
+      });
+    },
+    getCommodityType() {
+      const vm = this;
+      //取得類型
+      vm.category_str = vm.$route.path;
+      vm.category_str = decodeURI(
+        vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
+      );
+    },
+  },
+  created() {
+    this.getProducts();
+    this.getCommodityType();
+  },
 };
 </script>
 
@@ -194,56 +174,6 @@ export default {
   }
   to {
     opacity: 0;
-  }
-}
-
-.CommodityArea {
-  padding-top: 70px;
-  padding-bottom: 50px;
-}
-
-.product-label {
-  background-color: rgb(241, 12, 192);
-  position: absolute;
-  color: white;
-  font-weight: bold;
-  padding: 10px;
-  left: 10px;
-  top: 10px;
-  border-radius: 5px;
-}
-
-.card {
-  cursor: pointer;
-
-  .hover-more {
-    font-size: 26px;
-    visibility: hidden;
-
-    i {
-      &:hover {
-        font-size: 30px;
-        color: lightblue !important;
-      }
-    }
-  }
-
-  .card-img-top {
-    background-position: top center !important;
-    height: 280px;
-    transition: 0.5s;
-  }
-
-  &:hover {
-    .card-img-top {
-      //加上半透明黑色遮罩
-      background-color: rgba(0, 0, 0, 0.3) !important;
-      background-blend-mode: multiply !important;
-    }
-
-    .hover-more {
-      visibility: visible;
-    }
   }
 }
 </style>

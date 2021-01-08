@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="bg-dark text-white">
-      <div class="container h6 d-flex justify-content-between mb-0 p-3">
+      <div
+        class="container h6 d-lg-flex d-sm-block justify-content-between mb-0 p-3"
+      >
         <!-- left -->
         <div>
           <h4 class="mb-4 text-info">聯絡我們</h4>

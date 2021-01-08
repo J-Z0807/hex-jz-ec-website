@@ -31,6 +31,10 @@ export default {
     Nabar,
     Footer,
   },
+  data() {
+    return {};
+  },
+  methods: {},
 };
 </script>
 
