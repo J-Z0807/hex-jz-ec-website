@@ -14,8 +14,10 @@ import CustomerCheckout from '@/components/pages/back/CustomerCheckout';
 
 //前台
 import Layout from '@/components/Layout';
+
 import Home from '@/components/pages/front/Home';
 import Category from '@/components/pages/front/Category';
+import Commodity_detail from '@/components/pages/front/Commodity_detail';
 
 Vue.use(Router);
 
@@ -88,6 +90,10 @@ export default new Router({
       component: Layout,
       children:[
         {
+          path: '/',
+          redirect: '/home'
+        },
+        {
           path: 'home',
           name: 'Home',
           component: Home, 
@@ -96,6 +102,11 @@ export default new Router({
           path:'category/:categoryName',
           name: 'category',
           component: Category,
+        },
+        {
+          path: 'commodity_detail/:commodityId',
+          name: 'commodity_detail',
+          component: Commodity_detail,
         }
       ]
     },

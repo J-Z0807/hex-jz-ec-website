@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <div class="product_detail content">
       <div class="container-fluid bannerimg">
         <h1 class="text-white title text-center py-4">
@@ -7,7 +8,11 @@
         </h1>
         <nav aria-label="breadcrumb" class="breadmark w-50 m-auto">
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">首頁</a></li>
+            <li class="breadcrumb-item">
+              <router-link to="../home">
+                <span class="link">首頁</span>
+              </router-link>
+            </li>
             <li aria-current="page" class="breadcrumb-item active">
               {{ category_str }}
             </li>
@@ -21,7 +26,7 @@
 </template>
 
 <script>
-import Commodity from "../../Commodity";
+import Commodity from "./Commodity";
 
 export default {
   name: "login",
@@ -31,17 +36,18 @@ export default {
   data() {
     return {
       category_str: "",
-      path: this.$router.currentRoute.path,
+      isLoading: false,
     };
   },
   methods: {
     getProducts() {
       const vm = this;
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/products/all`;
-
+      vm.isLoading = true;
       vm.$http.get(url).then((response) => {
         //商品處理
         vm.$bus.$emit("data:commodity", response.data.products);
+        vm.isLoading = false;
       });
     },
     getCommodityType() {

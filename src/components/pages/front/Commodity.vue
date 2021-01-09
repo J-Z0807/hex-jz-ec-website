@@ -1,5 +1,7 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
+    <Alert />
     <div class="container mb-5">
       <h1 class="text-center CommodityArea" id="CommodityArea">
         <i class="fas fa-fire text-warning"></i>
@@ -32,14 +34,27 @@
               <div
                 class="hover-more d-flex justify-content-center h-100 align-items-center"
               >
-                <i class="fas fa-heart text-white mr-5" title="加入收藏"></i>
+                <i
+                  class="fas fa-heart add-favorite text-white mr-5"
+                  title="加入收藏"
+                  v-if="item.favorite !== 1"
+                  @click="addFavorite(item)"
+                ></i>
+                <i
+                  class="fas fa-heart cancel-favorite text-danger mr-5"
+                  title="取消收藏"
+                  v-else
+                  @click="cancelFavorite(item.id)"
+                ></i>
                 <i
                   class="fas fa-cart-plus text-white mr-5"
                   title="加入購物車"
+                  @click="addtoCart(item.id)"
                 ></i>
                 <i
                   class="fas fa-search text-white"
                   title="查看詳細商品資訊"
+                  @click="commodity_detail(item.id)"
                 ></i>
               </div>
             </div>
@@ -74,12 +89,20 @@
 </template>
 
 <script>
+import $ from "jquery";
+import Alert from "../../AlertMessage";
+
 export default {
   name: "commodity",
+  components: {
+    Alert,
+  },
   data() {
     return {
-      commodity: {},
+      commodity: [],
+      favorite: [],
       category_str: "",
+      isLoading: false,
     };
   },
   methods: {
@@ -91,9 +114,81 @@ export default {
         vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
       );
     },
+    getFavorite(commodity) {
+      const vm = this;
+      let tempFavorite = [];
+      tempFavorite = JSON.parse(localStorage.getItem("favorite")) || [];
+
+      vm.favorite = tempFavorite;
+
+      vm.commodity.forEach(function (value, index) {
+        for (let i = 0; i < vm.favorite.length; i++) {
+          if (vm.favorite[i].id === value.id) {
+            vm.commodity[index].favorite = 1;
+          } else {
+            vm.commodity[index].favorite = 0;
+          }
+        }
+      });
+    },
+    addFavorite(item) {
+      const vm = this;
+      let tempFavorite = [];
+      tempFavorite = vm.getFavorite();
+
+      //有收藏
+      if (vm.favorite.length > 0) {
+        vm.favorite.forEach((item, id) => {
+          vm.favorite[id].favorite = 1;
+        });
+      }
+
+      vm.favorite.push(item);
+
+      localStorage.setItem("favorite", JSON.stringify(vm.favorite));
+      vm.$bus.$emit("message:push", "收藏成功", "success");
+      $("#favorites_count").text(parseInt($("#favorites_count").text()) + 1); //將收藏的現有數量+1
+    },
+    cancelFavorite(product_id) {
+      const vm = this;
+
+      //刪除對應的資料
+      vm.favorite.forEach((item, index) => {
+        if (vm.favorite[index].id === product_id) {
+          vm.favorite.splice(index, 1);
+        }
+      });
+
+      localStorage.setItem("favorite", JSON.stringify(vm.favorite)); //重新將覆蓋掉原本的
+      vm.$bus.$emit("message:push", "取消收藏", "success");
+      $("#favorites_count").text(parseInt($("#favorites_count").text()) - 1); //將收藏的現有數量-1
+    },
+    addtoCart(id, qty = 1) {
+      const vm = this;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart`;
+      vm.isLoading = true;
+      const cart = {
+        product_id: id,
+        qty,
+      };
+      vm.$http.post(url, { data: cart }).then((response) => {
+        vm.isLoading = false;
+
+        if (response.data.success) {
+          vm.$bus.$emit("message:push", response.data.message, "success");
+          $("#cart-count").text(parseInt($("#cart-count").text()) + 1); //將購物車的現有數量+1
+        } else {
+          vm.$bus.$emit("message:push", response.data.message, "danger");
+        }
+      });
+    },
+    commodity_detail(productsID) {
+      this.$router.push(`/commodity_detail/${productsID}`);
+    },
   },
   created() {
     const vm = this;
+
     vm.$bus.$on("data:commodity", function (commodity) {
       vm.commodity = commodity;
     });
@@ -103,7 +198,11 @@ export default {
     $route(to, from) {
       this.path = this.$router.currentRoute.path;
       this.getCommodityType();
+      this.getFavorite();
     },
+  },
+  updated() {
+    this.getFavorite(this.commodity);
   },
 };
 </script>
@@ -141,6 +240,12 @@ export default {
       &:hover {
         font-size: 30px;
         color: lightblue !important;
+      }
+    }
+
+    .cancel-favorite {
+      &:hover {
+        color: rgb(223, 22, 163) !important;
       }
     }
   }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-white">
       <div class="container">
         <router-link to="../home">
@@ -67,39 +68,165 @@
 
           <ul class="navbar-nav h5 flex-wrap">
             <li class="nav-item align-self-center">
-              <a class="nav-link" href="#">
-                <i class="fas fa-heart"></i>
-                收藏區
-              </a>
+              <div class="dropdown">
+                <a
+                  class="nav-link d-flex"
+                  href="#"
+                  id="dropdownFavoritesMenu"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <div>
+                    <i class="fas fa-heart"></i>
+                    <span
+                      class="favorites_count"
+                      id="favorites_count"
+                      v-if="favorites_count != 0"
+                      >{{ favorites_count }}</span
+                    >
+                  </div>
+                </a>
+
+                <div
+                  class="dropdown-menu dropdown-menu-right px-2"
+                  aria-labelledby="dropdownFavoritesMenu"
+                >
+                  <div>
+                    <div class="overflow-auto" style="max-height: 300px">
+                      <table
+                        class="table table-borderless"
+                        style="min-width: 300px"
+                      >
+                        <thead>
+                          <th>名稱</th>
+                          <th width="50" class="text-center text-nowrap">
+                            數量
+                          </th>
+                          <th class="text-right">金額</th>
+                          <th width="80" class="text-center text-nowrap">
+                            刪除
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="border-top"
+                            v-for="item in catrs"
+                            :key="item.id"
+                          >
+                            <th class="align-middle cart-product-name">
+                              {{ item.product.title }}
+                            </th>
+                            <td class="text-center align-middle text-nowrap">
+                              {{ item.qty }} / {{ item.product.unit }}
+                            </td>
+                            <td class="text-right align-middle text-nowrap">
+                              {{ item.product.price | currency }}
+                            </td>
+                            <td class="text-center">
+                              <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                @click="removeCartItem(item.id)"
+                              >
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <router-link
+                      class="btn btn-primary w-100 text-light mt-2 btn-cart"
+                      to="/cart"
+                    >
+                      查看我的購物車
+                    </router-link>
+                  </div>
+                </div>
+              </div>
             </li>
 
             <li class="nav-item align-self-center">
-              <a class="nav-link d-flex" href="#">
-                <div>
-                  <i class="fas fa-shopping-cart"></i>
-                  <span class="cart-number" v-if="carts != 0">{{ carts }}</span>
-                </div>
-              </a>
-            </li>
+              <div class="dropdown">
+                <a
+                  class="nav-link d-flex"
+                  href="#"
+                  id="dropdownCartMenu"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <div>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span
+                      class="cart-count"
+                      id="cart-count"
+                      v-if="carts_count != 0"
+                      >{{ carts_count }}</span
+                    >
+                  </div>
+                </a>
 
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn btn-info dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Language
-                  </button>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/tw">中文</a>
-                    <a class="dropdown-item" href="/en">English</a>
+                <div
+                  class="dropdown-menu dropdown-menu-right px-2"
+                  aria-labelledby="dropdownCartMenu"
+                >
+                  <div>
+                    <div class="overflow-auto" style="max-height: 300px">
+                      <table
+                        class="table table-borderless"
+                        style="min-width: 300px"
+                      >
+                        <thead>
+                          <th>名稱</th>
+                          <th width="50" class="text-center text-nowrap">
+                            數量
+                          </th>
+                          <th class="text-right">金額</th>
+                          <th width="80" class="text-center text-nowrap">
+                            刪除
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="border-top"
+                            v-for="item in catrs"
+                            :key="item.id"
+                          >
+                            <th class="align-middle cart-product-name">
+                              {{ item.product.title }}
+                            </th>
+                            <td class="text-center align-middle text-nowrap">
+                              {{ item.qty }} / {{ item.product.unit }}
+                            </td>
+                            <td class="text-right align-middle text-nowrap">
+                              {{ item.product.price | currency }}
+                            </td>
+                            <td class="text-center">
+                              <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                @click="removeCartItem(item.id)"
+                              >
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <router-link
+                      class="btn btn-primary w-100 text-light mt-2 btn-cart"
+                      to="/cart"
+                    >
+                      查看我的購物車
+                    </router-link>
                   </div>
                 </div>
-              </a>
+              </div>
             </li>
           </ul>
         </div>
@@ -113,8 +240,11 @@ export default {
   name: "Nabar",
   data() {
     return {
-      carts: "",
+      carts_count: "",
+      favorites_count: "",
       category_str: "",
+      catrs: {},
+      isLoading: false,
     };
   },
   methods: {
@@ -123,8 +253,17 @@ export default {
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart`;
 
       vm.$http.get(url).then((response) => {
-        vm.carts = response.data.data.carts.length;
+        vm.catrs = response.data.data.carts;
+        console.log(vm.catrs);
+        vm.carts_count = response.data.data.carts.length;
       });
+    },
+    getFavorite() {
+      const vm = this;
+      let tempFavorite = [];
+      tempFavorite = JSON.parse(localStorage.getItem("favorite")) || [];
+
+      vm.favorites_count = tempFavorite.length;
     },
     getCommodityType() {
       const vm = this;
@@ -134,9 +273,21 @@ export default {
         vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
       );
     },
+    removeCartItem(id = "") {
+      console.log(id);
+      const vm = this;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart/${id}`;
+      vm.isLoading = true;
+
+      vm.$http.delete(url).then((response) => {
+        vm.getCart();
+        vm.isLoading = false;
+      });
+    },
   },
   created() {
     this.getCart();
+    this.getFavorite();
     this.getCommodityType();
   },
   watch: {
@@ -157,7 +308,8 @@ li {
   margin-right: 10px;
 }
 
-.cart-number {
+.favorites_count,
+.cart-count {
   background-color: red;
   border-radius: 50%;
   color: white;
@@ -182,5 +334,12 @@ li {
     color: blue !important;
     font-weight: bold;
   }
+}
+
+.cart-product-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 125px;
+  overflow: hidden;
 }
 </style>
