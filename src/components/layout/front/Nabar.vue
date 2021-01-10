@@ -82,8 +82,8 @@
                     <span
                       class="favorites_count"
                       id="favorites_count"
-                      v-if="favorites_count != 0"
-                      >{{ favorites_count }}</span
+                      v-if="favorites.length != 0"
+                      >{{ favorites.length }}</span
                     >
                   </div>
                 </a>
@@ -93,56 +93,69 @@
                   aria-labelledby="dropdownFavoritesMenu"
                 >
                   <div>
-                    <div class="overflow-auto" style="max-height: 300px">
+                    <div
+                      class="overflow-auto"
+                      style="max-height: 320px"
+                      v-if="favorites.length > 0"
+                    >
                       <table
                         class="table table-borderless"
                         style="min-width: 300px"
                       >
                         <thead>
+                          <th class="text-center">商品</th>
                           <th>名稱</th>
-                          <th width="50" class="text-center text-nowrap">
-                            數量
-                          </th>
-                          <th class="text-right">金額</th>
-                          <th width="80" class="text-center text-nowrap">
-                            刪除
-                          </th>
+                          <th class="text-center">功能</th>
                         </thead>
-                        <tbody>
+                        <tbody class="favorite_area">
                           <tr
                             class="border-top"
-                            v-for="item in catrs"
+                            v-for="item in favorites"
                             :key="item.id"
                           >
-                            <th class="align-middle cart-product-name">
-                              {{ item.product.title }}
+                            <th>
+                              <img
+                                :src="item.imageUrl"
+                                alt="商品圖示"
+                                class="img-fluid"
+                                @click="commodity_detail(item.id)"
+                              />
                             </th>
-                            <td class="text-center align-middle text-nowrap">
-                              {{ item.qty }} / {{ item.product.unit }}
+                            <td class="align-middle text-nowrap product-name">
+                              {{ item.title }}
                             </td>
-                            <td class="text-right align-middle text-nowrap">
-                              {{ item.product.price | currency }}
-                            </td>
-                            <td class="text-center">
-                              <button
-                                type="button"
-                                class="btn btn-outline-danger btn-sm"
-                                @click="removeCartItem(item.id)"
-                              >
-                                <i class="fas fa-trash-alt"></i>
-                              </button>
+                            <td class="align-middle">
+                              <div class="d-flex">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-primary btn-sm mr-1"
+                                  title="加入購物車"
+                                  @click="addtoCart(item.id)"
+                                >
+                                  <i class="fas fa-shopping-cart"></i>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-danger btn-sm"
+                                  title="取消收藏"
+                                  @click="cancelFavorite(item.id)"
+                                >
+                                  <i class="fas fa-heart"></i>
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
 
-                    <router-link
-                      class="btn btn-primary w-100 text-light mt-2 btn-cart"
-                      to="/cart"
-                    >
-                      查看我的購物車
-                    </router-link>
+                    <div style="min-width: 300px" v-else>
+                      <p
+                        class="text-center text-nowrap mb-0 py-5 h5 text-secondary"
+                      >
+                        <b>目前沒有任何收藏收品呦!</b>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -163,8 +176,8 @@
                     <span
                       class="cart-count"
                       id="cart-count"
-                      v-if="carts_count != 0"
-                      >{{ carts_count }}</span
+                      v-if="carts.length != 0"
+                      >{{ carts.length }}</span
                     >
                   </div>
                 </a>
@@ -173,7 +186,7 @@
                   class="dropdown-menu dropdown-menu-right px-2"
                   aria-labelledby="dropdownCartMenu"
                 >
-                  <div>
+                  <div v-if="carts.length > 0">
                     <div class="overflow-auto" style="max-height: 300px">
                       <table
                         class="table table-borderless"
@@ -192,17 +205,17 @@
                         <tbody>
                           <tr
                             class="border-top"
-                            v-for="item in catrs"
+                            v-for="item in carts"
                             :key="item.id"
                           >
-                            <th class="align-middle cart-product-name">
+                            <th class="align-middle product-name">
                               {{ item.product.title }}
                             </th>
                             <td class="text-center align-middle text-nowrap">
                               {{ item.qty }} / {{ item.product.unit }}
                             </td>
                             <td class="text-right align-middle text-nowrap">
-                              {{ item.product.price | currency }}
+                              {{ item.total | currency }}
                             </td>
                             <td class="text-center">
                               <button
@@ -220,10 +233,18 @@
 
                     <router-link
                       class="btn btn-primary w-100 text-light mt-2 btn-cart"
-                      to="/cart"
+                      to="/carts_checkout"
                     >
                       查看我的購物車
                     </router-link>
+                  </div>
+
+                  <div style="min-width: 300px" v-else>
+                    <p
+                      class="text-center text-nowrap mb-0 py-5 h5 text-secondary"
+                    >
+                      <b>目前購物車空空如也!</b>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -236,14 +257,17 @@
 </template>
 
 <script>
+import $ from "jquery";
+
 export default {
   name: "Nabar",
   data() {
     return {
-      carts_count: "",
-      favorites_count: "",
+      favorites: {},
       category_str: "",
-      catrs: {},
+      carts: {
+        length: 0,
+      },
       isLoading: false,
     };
   },
@@ -253,9 +277,13 @@ export default {
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart`;
 
       vm.$http.get(url).then((response) => {
-        vm.catrs = response.data.data.carts;
-        console.log(vm.catrs);
-        vm.carts_count = response.data.data.carts.length;
+        vm.carts = response.data.data.carts;
+        vm.isLoading = false;
+
+        //購物車為空時隱藏數量區塊
+        if (vm.carts.length === 0) {
+          $(".cart-count").html("");
+        }
       });
     },
     getFavorite() {
@@ -263,7 +291,21 @@ export default {
       let tempFavorite = [];
       tempFavorite = JSON.parse(localStorage.getItem("favorite")) || [];
 
-      vm.favorites_count = tempFavorite.length;
+      vm.favorites = tempFavorite;
+    },
+    cancelFavorite(product_id) {
+      const vm = this;
+
+      //刪除對應的資料
+      vm.favorites.forEach((item, index) => {
+        if (vm.favorites[index].id === product_id) {
+          vm.favorites.splice(index, 1);
+        }
+      });
+
+      localStorage.setItem("favorite", JSON.stringify(vm.favorites)); //重新將覆蓋掉原本的
+      vm.$bus.$emit("message:push", "取消收藏", "success");
+      $("#favorites_count").text(parseInt($("#favorites_count").text()) - 1); //將收藏的現有數量-1
     },
     getCommodityType() {
       const vm = this;
@@ -273,22 +315,55 @@ export default {
         vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
       );
     },
+    addtoCart(id, qty = 1) {
+      const vm = this;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart`;
+      vm.isLoading = true;
+      const cart = {
+        product_id: id,
+        qty,
+      };
+      vm.$http.post(url, { data: cart }).then((response) => {
+        if (response.data.success) {
+          $("#cart-count").text(parseInt($("#cart-count").text()) + 1); //將購物車的現有數量+1
+          vm.getCart();
+          vm.$bus.$emit("message:push", response.data.message, "success");
+          vm.$bus.$emit("ChangeCart");
+        } else {
+          vm.$bus.$emit("message:push", response.data.message, "danger");
+        }
+      });
+    },
     removeCartItem(id = "") {
-      console.log(id);
       const vm = this;
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart/${id}`;
       vm.isLoading = true;
 
       vm.$http.delete(url).then((response) => {
-        vm.getCart();
         vm.isLoading = false;
+        if (parseInt($("#cart-count").text()) - 1 !== 0)
+          $("#cart-count").text(parseInt($("#cart-count").text()) - 1); //將購物車的現有數量-1
+        vm.getCart();
+        vm.$bus.$emit("message:push", response.data.message, "success");
       });
+    },
+    commodity_detail(productsID) {
+      this.$router.push(`/commodity_detail/${productsID}`);
     },
   },
   created() {
-    this.getCart();
-    this.getFavorite();
-    this.getCommodityType();
+    const vm = this;
+    vm.getCart();
+    vm.getFavorite();
+    vm.getCommodityType();
+
+    vm.$bus.$on("ChangeFavorite", function () {
+      vm.getFavorite();
+    });
+
+    vm.$bus.$on("ChangeCart", function () {
+      vm.getCart();
+    });
   },
   watch: {
     $route(to, from) {
@@ -336,10 +411,20 @@ li {
   }
 }
 
-.cart-product-name {
+.product-name {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 125px;
   overflow: hidden;
+}
+
+.favorite_area {
+  img {
+    cursor: pointer;
+  }
+
+  .product-name {
+    min-width: 125px;
+  }
 }
 </style>

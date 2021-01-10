@@ -41,9 +41,7 @@
               </h3>
             </li>
             <li class="mb-4">
-              <h4 class="text-danger">
-                {{ product.origin_price | currency }} 元
-              </h4>
+              <h4 class="text-danger">{{ product.price | currency }} 元</h4>
             </li>
 
             <li class="mb-4">
@@ -51,7 +49,9 @@
                 <button
                   type="button"
                   class="btn btn-secondary"
-                  @click.prevent="amount > 1 ? amount-- : (amount = 1)"
+                  @click.prevent="
+                    product.num > 1 ? product.num-- : (product.num = 1)
+                  "
                 >
                   <i aria-hidden="true" class="fa fa-minus"></i>
                 </button>
@@ -60,13 +60,15 @@
                   max="10"
                   min="1"
                   class="amount"
-                  v-model="amount"
+                  v-model="product.num"
                   readonly
                 />
                 <button
                   type="button"
                   class="btn btn-secondary"
-                  @click.prevent="amount < 10 ? amount++ : (amount = 10)"
+                  @click.prevent="
+                    product.num < 10 ? product.num++ : (product.num = 10)
+                  "
                 >
                   <i aria-hidden="true" class="fa fa-plus"></i>
                 </button>
@@ -74,6 +76,10 @@
             </li>
 
             <li class="mb-5">
+              <div class="text-muted text-nowrap mr-3">
+                小計
+                <strong>{{ product.price * product.num }}</strong> 元
+              </div>
               <button
                 type="button"
                 class="btn btn-outline-primary"
@@ -115,10 +121,9 @@ export default {
   data() {
     return {
       product: {
-        origin_price: 0,
+        price: 0,
       },
       isLoading: false,
-      amount: 1,
       status: {
         loadingShoppingItem: "",
       },
@@ -136,6 +141,7 @@ export default {
 
       vm.$http.get(url).then((response) => {
         vm.product = response.data.product;
+        vm.$set(vm.product, "num", 1); //強制寫入 (雙向綁定)
 
         vm.isLoading = false;
       });
@@ -157,6 +163,8 @@ export default {
         if (response.data.success) {
           vm.$bus.$emit("message:push", response.data.message, "success");
           $("#cart-count").text(parseInt($("#cart-count").text()) + 1); //將購物車的現有數量+1
+
+          vm.$bus.$emit("ChangeCart");
         } else {
           vm.$bus.$emit("message:push", response.data.message, "danger");
         }

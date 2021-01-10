@@ -114,7 +114,7 @@ export default {
         vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
       );
     },
-    getFavorite(commodity) {
+    getFavorite() {
       const vm = this;
       let tempFavorite = [];
       tempFavorite = JSON.parse(localStorage.getItem("favorite")) || [];
@@ -124,30 +124,26 @@ export default {
       vm.commodity.forEach(function (value, index) {
         for (let i = 0; i < vm.favorite.length; i++) {
           if (vm.favorite[i].id === value.id) {
-            vm.commodity[index].favorite = 1;
+            vm.$set(vm.commodity[index], "favorite", 1); //強制寫入(雙向綁定)
+            break;
           } else {
-            vm.commodity[index].favorite = 0;
+            vm.$set(vm.commodity[index], "favorite", 0); //強制寫入(雙向綁定)
           }
         }
       });
     },
     addFavorite(item) {
       const vm = this;
-      let tempFavorite = [];
-      tempFavorite = vm.getFavorite();
-
-      //有收藏
-      if (vm.favorite.length > 0) {
-        vm.favorite.forEach((item, id) => {
-          vm.favorite[id].favorite = 1;
-        });
-      }
 
       vm.favorite.push(item);
 
       localStorage.setItem("favorite", JSON.stringify(vm.favorite));
       vm.$bus.$emit("message:push", "收藏成功", "success");
       $("#favorites_count").text(parseInt($("#favorites_count").text()) + 1); //將收藏的現有數量+1
+
+      vm.$bus.$emit("ChangeFavorite");
+
+      vm.getFavorite();
     },
     cancelFavorite(product_id) {
       const vm = this;
@@ -162,6 +158,9 @@ export default {
       localStorage.setItem("favorite", JSON.stringify(vm.favorite)); //重新將覆蓋掉原本的
       vm.$bus.$emit("message:push", "取消收藏", "success");
       $("#favorites_count").text(parseInt($("#favorites_count").text()) - 1); //將收藏的現有數量-1
+
+      vm.$bus.$emit("ChangeFavorite");
+      vm.getFavorite();
     },
     addtoCart(id, qty = 1) {
       const vm = this;
@@ -177,6 +176,7 @@ export default {
         if (response.data.success) {
           vm.$bus.$emit("message:push", response.data.message, "success");
           $("#cart-count").text(parseInt($("#cart-count").text()) + 1); //將購物車的現有數量+1
+          vm.$bus.$emit("ChangeCart");
         } else {
           vm.$bus.$emit("message:push", response.data.message, "danger");
         }
@@ -191,8 +191,9 @@ export default {
 
     vm.$bus.$on("data:commodity", function (commodity) {
       vm.commodity = commodity;
+      vm.getFavorite();
     });
-    this.getCommodityType();
+    vm.getCommodityType();
   },
   watch: {
     $route(to, from) {
@@ -200,9 +201,6 @@ export default {
       this.getCommodityType();
       this.getFavorite();
     },
-  },
-  updated() {
-    this.getFavorite(this.commodity);
   },
 };
 </script>

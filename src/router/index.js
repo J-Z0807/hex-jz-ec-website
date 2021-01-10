@@ -18,6 +18,7 @@ import Layout from '@/components/Layout';
 import Home from '@/components/pages/front/Home';
 import Category from '@/components/pages/front/Category';
 import Commodity_detail from '@/components/pages/front/Commodity_detail';
+import CartsCheckout from '@/components/pages/front/CartsCheckout';
 
 Vue.use(Router);
 
@@ -107,6 +108,11 @@ export default new Router({
           path: 'commodity_detail/:commodityId',
           name: 'commodity_detail',
           component: Commodity_detail,
+        },
+        {
+          path: 'carts_checkout',
+          name: 'CartsCheckout',
+          component: CartsCheckout,
         }
       ]
     },

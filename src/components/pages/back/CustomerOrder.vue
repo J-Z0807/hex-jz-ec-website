@@ -95,28 +95,37 @@
             </button>
           </div>
           <div class="modal-body">
-            <img
-              :src="product.imageUrl"
-              class="img-fluid"
-              :alt="product.title"
-            />
+            <div class="d-flex justify-content-center">
+              <img
+                :src="product.imageUrl"
+                class="img-fluid"
+                :alt="product.title"
+              />
+            </div>
+
             <blockquote class="blockquote mt-3">
               <p class="mb-0">{{ product.content }}</p>
               <footer class="blockquote-footer text-right">
                 {{ product.description }}
               </footer>
             </blockquote>
-            <div class="d-flex justify-content-between align-items-baseline">
-              <div class="h4" v-if="!product.price">
-                {{ product.origin_price }} 元
-              </div>
-              <del class="h6" v-if="product.price"
-                >原價 {{ product.price }} 元</del
+
+            <div
+              class="d-flex align-items-baseline"
+              :class="{
+                'justify-content-end': product.origin_price === product.price,
+                'justify-content-between':
+                  product.origin_price !== product.price,
+              }"
+            >
+              <del
+                class="h6 text-secondary"
+                v-if="product.origin_price != product.price"
+                >原價 {{ product.origin_price | currency }}</del
               >
-              <div class="h4" v-if="product.price">
-                現在只要 {{ product.price }} 元
-              </div>
+              <div class="h5 text-danger">{{ product.price | currency }}</div>
             </div>
+
             <select class="form-control mt-3" v-model="product.num">
               <option :value="num" v-for="num in 10" :key="num">
                 選購 {{ num }} {{ product.unit }}
@@ -374,6 +383,8 @@ export default {
       vm.status.loadingviewMore = id;
       vm.$http.get(url).then((response) => {
         vm.product = response.data.product;
+        vm.$set(vm.product, "num", 1); //強制寫入 (雙向綁定)
+
         $("#productModal").modal("show");
         vm.status.loadingviewMore = "";
       });
