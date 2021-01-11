@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import Commodity from "./Commodity";
+import Commodity from "../../Commodity";
 
 export default {
   name: "login",

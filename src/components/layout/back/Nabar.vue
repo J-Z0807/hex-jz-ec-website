@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <span class="navbar-brand col-sm-3 col-md-2 mr-0 user-select-none"
         >Quality Store</span
@@ -28,15 +29,22 @@ import $ from "jquery";
 
 export default {
   name: "Nabar",
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   methods: {
     //登出
     signout() {
       const api = `${process.env.API_PATH}/logout`;
       const vm = this;
+      vm.isLoading = true;
 
       vm.$http.post(api).then((response) => {
+        vm.isLoading = false;
         if (response.data.success) {
-          vm.$router.push("/login");
+          vm.$router.push("/admin/login");
         }
       });
     },

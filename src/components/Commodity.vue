@@ -90,7 +90,7 @@
 
 <script>
 import $ from "jquery";
-import Alert from "../../AlertMessage";
+import Alert from "./AlertMessage";
 
 export default {
   name: "commodity",

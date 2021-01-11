@@ -15,7 +15,8 @@
 
       <h2 class="main-title mb-5">購物車</h2>
 
-      <table class="table mb-0" style="min-width: 300px">
+      <h2 class="text-info text-center my-5" v-if="!isCartData">無任何商品</h2>
+      <table class="table mb-0" v-else style="min-width: 300px">
         <thead>
           <tr>
             <th width="150">商品</th>
@@ -37,6 +38,9 @@
             </th>
             <th class="align-middle product-name">
               {{ item.product.title }}
+              <p class="text-success" v-if="item.coupon !== undefined">
+                已使用折價卷 折價{{ item.coupon.percent }}%
+              </p>
             </th>
             <td class="text-center align-middle">
               <div class="btn-group amount_area">
@@ -46,8 +50,13 @@
                   @click.prevent="
                     if (item.qty > 1) {
                       item.qty--;
-                      final_total = total =
-                        total - parseInt(item.product.price);
+                      total = total - parseInt(item.product.price);
+                      final_total =
+                        item.coupon !== undefined
+                          ? final_total -
+                            parseInt(item.product.price) *
+                              (item.coupon.percent / 100)
+                          : final_total - parseInt(item.product.price);
                     } else {
                       item.qty = 1;
                     }
@@ -69,8 +78,13 @@
                   @click.prevent="
                     if (item.qty < 10) {
                       item.qty++;
-                      final_total = total =
-                        total + parseInt(item.product.price);
+                      total = total + parseInt(item.product.price);
+                      final_total =
+                        item.coupon !== undefined
+                          ? final_total +
+                            parseInt(item.product.price) *
+                              (item.coupon.percent / 100)
+                          : final_total + parseInt(item.product.price);
                     } else {
                       item.qty = 10;
                     }
@@ -82,6 +96,12 @@
             </td>
             <td class="text-right align-middle text-nowrap">
               {{ (item.product.price * item.qty) | currency }}
+              <p class="text-success" v-if="item.coupon !== undefined">
+                {{
+                  (item.product.price * item.qty * (item.coupon.percent / 100))
+                    | currency
+                }}
+              </p>
             </td>
             <td class="text-center align-middle">
               <button
@@ -100,17 +120,31 @@
               <div class="input-group input-group-sm">
                 <input
                   type="text"
-                  placeholder="請輸入優惠碼"
-                  class="form-control"
+                  class="form-control w-50"
+                  v-model="coupon_code"
+                  @input="is_invalid_coupon_code = false"
+                  :disabled="final_total !== total"
+                  :placeholder="coupon_input_placeholder"
                 />
                 <div class="input-group-append">
                   <button
                     type="button"
                     class="btn btn-outline-primary"
                     @click="addCouponCode()"
+                    :disabled="final_total !== total"
                   >
+                    <i
+                      class="fas fa-spinner fa-spin"
+                      v-if="status.loadingCoupon_code"
+                    ></i>
                     套用優惠碼
                   </button>
+                  <p
+                    class="coupon-error text-danger d-flex align-self-center mb-0 ml-3"
+                    v-if="is_invalid_coupon_code"
+                  >
+                    此優惠券無效
+                  </p>
                 </div>
               </div>
             </td>
@@ -137,40 +171,20 @@
         </tfoot>
       </table>
 
-      <div class="text-right px-4">
-        <button class="btn btn-danger btn-text-style">前往填寫資料</button>
+      <div class="text-right px-4" v-if="isCartData">
+        <button class="btn btn-text-style">
+          <router-link class="nav-link" to="/write_information">
+            <span class="text-white">前往填寫資料</span>
+          </router-link>
+        </button>
       </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="hint-modal">
-      <div class="modal-dialog bg-warning" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">提示</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Modal body text goes here.</p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
+      <div class="text-right px-4" v-else>
+        <button class="btn btn-text-style">
+          <router-link class="nav-link" to="/category/衣服">
+            <span class="text-white">前往商店瀏覽</span>
+          </router-link>
+        </button>
       </div>
     </div>
   </div>
@@ -178,7 +192,7 @@
 
 <script>
 import $ from "jquery";
-import Alert from "../../AlertMessage";
+import Alert from "./AlertMessage";
 
 export default {
   name: "cart",
@@ -188,10 +202,16 @@ export default {
   data() {
     return {
       carts: [],
+      isCartData: false,
       final_total: 0,
       total: 0,
       isLoading: false,
-      isEdit_qty: false,
+      coupon_code: "",
+      coupon_input_placeholder: "",
+      is_invalid_coupon_code: false,
+      status: {
+        loadingCoupon_code: false,
+      },
     };
   },
   methods: {
@@ -204,6 +224,13 @@ export default {
         vm.carts = response.data.data.carts;
         vm.total = response.data.data.total;
         vm.final_total = response.data.data.final_total;
+
+        if (vm.carts.length !== 0) vm.isCartData = true;
+        else vm.isCartData = false;
+
+        if (vm.total !== vm.final_total)
+          vm.coupon_input_placeholder = "此訂單已使用優惠卷，無法再次使用!!!";
+        else vm.coupon_input_placeholder = "請輸入優惠碼";
 
         vm.isLoading = false;
       });
@@ -220,6 +247,28 @@ export default {
         vm.getCart();
         vm.$bus.$emit("message:push", response.data.message, "success");
         vm.$bus.$emit("ChangeCart");
+      });
+    },
+    addCouponCode() {
+      const vm = this;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/coupon`;
+      vm.status.loadingCoupon_code = true;
+
+      const coupon = {
+        code: vm.coupon_code,
+      };
+
+      vm.$http.post(url, { data: coupon }).then((response) => {
+        if (!response.data.success) {
+          vm.is_invalid_coupon_code = true;
+        } else {
+          vm.is_invalid_coupon_code = false;
+          vm.$bus.$emit("message:push", response.data.message, "success");
+          vm.getCart();
+        }
+
+        vm.coupon_code = "";
+        vm.status.loadingCoupon_code = false;
       });
     },
     commodity_detail(productsID) {
@@ -272,7 +321,22 @@ export default {
   @include gradient-color(yellow, red);
 
   &:hover {
-    @include gradient-color(red, yellow);
+    @include gradient-color(rgb(0, 81, 255), rgb(255, 0, 191));
+  }
+}
+
+.coupon-error {
+  opacity: 1;
+  -webkit-animation: couponError 0.5s 3;
+  animation: couponError 0.5s 3;
+}
+
+@keyframes couponError {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 </style>

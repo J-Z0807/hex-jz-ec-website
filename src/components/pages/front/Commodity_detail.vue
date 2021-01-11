@@ -122,6 +122,7 @@ export default {
     return {
       product: {
         price: 0,
+        num: 0,
       },
       isLoading: false,
       status: {

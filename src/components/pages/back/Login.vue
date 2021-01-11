@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <form class="form-signin" @submit.prevent="signin">
       <h1 class="h3 mb-3 font-weight-normal">
         <i class="fas fa-cog mr-2"></i>
@@ -52,6 +53,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       user: {
         username: "",
         password: "",
@@ -65,8 +67,11 @@ export default {
       const api = `${process.env.API_PATH}/admin/signin`;
       const vm = this;
       vm.isRemember = document.querySelector("#remember_Account").checked; //是否記住帳號
+      vm.isLoading = true;
 
       vm.$http.post(api, vm.user).then((response) => {
+        vm.isLoading = false;
+
         if (response.data.success) {
           const token = response.data.token;
           const expired = response.data.expired;

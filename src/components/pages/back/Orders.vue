@@ -19,7 +19,7 @@
           <td>
             <p v-for="product in item.products" :key="product.id">
               <b class="h6 d-block">{{ product.product.title }}</b>
-              <small>數量: {{ product.product.num }}</small>
+              <small>數量: {{ product.qty }}</small>
             </p>
           </td>
           <td class="text-right">{{ item.total | currency }}</td>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <div class="product_detail content">
       <div class="container-fluid bannerimg">
         <!-- 訂單進度 -->
@@ -34,32 +33,17 @@
 </template>
 
 <script>
-import Commodity from "./Commodity";
-import Cart from "./Cart";
+import Cart from "../../Cart";
 
 export default {
   name: "login",
   components: {
-    Commodity,
     Cart,
   },
   data() {
-    return {
-      isLoading: false,
-    };
+    return {};
   },
-  methods: {
-    getProducts() {
-      const vm = this;
-      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/products/all`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((response) => {
-        //商品處理
-        vm.$bus.$emit("data:commodity", response.data.products);
-        vm.isLoading = false;
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 
