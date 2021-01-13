@@ -101,19 +101,11 @@ export default {
     return {
       commodity: [],
       favorite: [],
-      category_str: "",
+      category_str: "home",
       isLoading: false,
     };
   },
   methods: {
-    getCommodityType() {
-      const vm = this;
-      //取得類型
-      vm.category_str = vm.$route.path;
-      vm.category_str = decodeURI(
-        vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
-      );
-    },
     getFavorite() {
       const vm = this;
       let tempFavorite = [];
@@ -193,13 +185,17 @@ export default {
       vm.commodity = commodity;
       vm.getFavorite();
     });
-    vm.getCommodityType();
+
+    if (vm.$route.params.categoryName !== undefined)
+      vm.category_str = vm.$route.params.categoryName;
   },
   watch: {
     $route(to, from) {
-      this.path = this.$router.currentRoute.path;
-      this.getCommodityType();
-      this.getFavorite();
+      const vm = this;
+
+      vm.path = vm.$router.currentRoute.path;
+      vm.category_str = vm.$route.params.categoryName;
+      vm.getFavorite();
     },
   },
 };

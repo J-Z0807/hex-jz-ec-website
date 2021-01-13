@@ -47,20 +47,8 @@
                 <button
                   type="button"
                   class="btn btn-outline-secondary"
-                  @click.prevent="
-                    if (item.qty > 1) {
-                      item.qty--;
-                      total = total - parseInt(item.product.price);
-                      final_total =
-                        item.coupon !== undefined
-                          ? final_total -
-                            parseInt(item.product.price) *
-                              (item.coupon.percent / 100)
-                          : final_total - parseInt(item.product.price);
-                    } else {
-                      item.qty = 1;
-                    }
-                  "
+                  @click.prevent="change_qty(item, '-')"
+                  v-if="!is_have_coupon_code"
                 >
                   <i aria-hidden="true" class="fa fa-minus"></i>
                 </button>
@@ -70,25 +58,15 @@
                   min="1"
                   class="amount text-center"
                   v-model="item.qty"
+                  v-if="!is_have_coupon_code"
                   readonly
                 />
+                <span v-if="is_have_coupon_code">{{ item.qty }}</span>
                 <button
                   type="button"
                   class="btn btn-outline-secondary"
-                  @click.prevent="
-                    if (item.qty < 10) {
-                      item.qty++;
-                      total = total + parseInt(item.product.price);
-                      final_total =
-                        item.coupon !== undefined
-                          ? final_total +
-                            parseInt(item.product.price) *
-                              (item.coupon.percent / 100)
-                          : final_total + parseInt(item.product.price);
-                    } else {
-                      item.qty = 10;
-                    }
-                  "
+                  @click.prevent="change_qty(item, '+')"
+                  v-if="!is_have_coupon_code"
                 >
                   <i aria-hidden="true" class="fa fa-plus"></i>
                 </button>
@@ -117,14 +95,14 @@
         <tfoot>
           <tr>
             <td colspan="2">
-              <div class="input-group input-group-sm">
+              <div
+                class="input-group input-group-sm"
+                v-if="!is_have_coupon_code & is_saveCartData"
+              >
                 <input
                   type="text"
                   class="form-control w-50"
                   v-model="coupon_code"
-                  @input="is_invalid_coupon_code = false"
-                  :disabled="final_total !== total"
-                  :placeholder="coupon_input_placeholder"
                 />
                 <div class="input-group-append">
                   <button
@@ -146,6 +124,9 @@
                     此優惠券無效
                   </p>
                 </div>
+                <span class="text-danger"
+                  >只要添加了優惠卷後就無法再進行商品數量更改了!</span
+                >
               </div>
             </td>
 
@@ -173,7 +154,16 @@
 
       <div class="text-right px-4" v-if="isCartData">
         <button class="btn btn-text-style">
-          <router-link class="nav-link" to="/write_information">
+          <a
+            class="nav-link"
+            href=""
+            @click.prevent="saveNewCartData()"
+            v-if="!is_saveCartData"
+          >
+            <span class="text-white">確認購物清單</span>
+          </a>
+
+          <router-link to="/write_information" class="nav-link" v-else>
             <span class="text-white">前往填寫資料</span>
           </router-link>
         </button>
@@ -207,14 +197,97 @@ export default {
       total: 0,
       isLoading: false,
       coupon_code: "",
-      coupon_input_placeholder: "",
+      is_have_coupon_code: false,
       is_invalid_coupon_code: false,
+      is_saveCartData: true, //一開始未更動為true，等到更動後為false
       status: {
         loadingCoupon_code: false,
       },
     };
   },
   methods: {
+    change_qty(item, change_str) {
+      const vm = this;
+      vm.is_saveCartData = false; //如果原本為最新資料，更動後為未儲存資料
+
+      if (change_str === "+") {
+        if (item.qty < 10) {
+          item.qty++;
+          vm.total = vm.total + parseInt(item.product.price);
+
+          //有折價卷時
+          if (item.coupon !== undefined) {
+            vm.final_total =
+              vm.final_total +
+              parseInt(
+                (item.product.price * (item.coupon.percent / 100)).toFixed(0)
+              );
+          } else {
+            vm.final_total = vm.final_total + parseInt(item.product.price);
+          }
+        } else {
+          item.qty = 10;
+        }
+      } else {
+        if (item.qty > 1) {
+          item.qty--;
+          vm.total = vm.total - parseInt(item.product.price);
+
+          //有折價卷時
+          if (item.coupon !== undefined) {
+            vm.final_total =
+              vm.final_total -
+              parseInt(
+                (item.product.price * (item.coupon.percent / 100)).toFixed(0)
+              );
+          } else {
+            vm.final_total = vm.final_total - parseInt(item.product.price);
+          }
+        } else {
+          item.qty = 1;
+        }
+      }
+    },
+    saveNewCartData() {
+      const vm = this;
+
+      vm.isLoading = true;
+
+      let url = "";
+
+      vm.carts.forEach((element, key) => {
+        //刪除
+        url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart/${element.id}`;
+        vm.$http.delete(url).then((response) => {});
+
+        //重新加入新的商品資訊
+        url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart`;
+        const cart = {
+          product_id: element.product_id,
+          qty: element.qty,
+        };
+
+        vm.$http.post(url, { data: cart }).then((response) => {});
+
+        //添加原先的優惠卷
+        if (element.coupon !== undefined) {
+          url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/coupon`;
+
+          const coupon = {
+            code: element.coupon.code,
+          };
+
+          vm.$http.post(url, { data: coupon }).then((response) => {});
+        }
+      });
+
+      //避免太快就將載入效果移除，讓資料讀取錯誤
+      setTimeout(function () {
+        vm.isLoading = false;
+      }, 1000);
+
+      vm.is_saveCartData = true; //設為已儲存狀態
+    },
     getCart() {
       const vm = this;
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/cart`;
@@ -228,9 +301,11 @@ export default {
         if (vm.carts.length !== 0) vm.isCartData = true;
         else vm.isCartData = false;
 
-        if (vm.total !== vm.final_total)
-          vm.coupon_input_placeholder = "此訂單已使用優惠卷，無法再次使用!!!";
-        else vm.coupon_input_placeholder = "請輸入優惠碼";
+        if (vm.total !== vm.final_total) {
+          vm.is_have_coupon_code = true;
+        } else {
+          vm.is_have_coupon_code = false;
+        }
 
         vm.isLoading = false;
       });

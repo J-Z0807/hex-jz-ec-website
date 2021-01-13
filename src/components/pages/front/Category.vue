@@ -14,7 +14,7 @@
               </router-link>
             </li>
             <li aria-current="page" class="breadcrumb-item active">
-              {{ category_str }}
+              {{ this.$route.params.categoryName }}
             </li>
           </ul>
         </nav>
@@ -35,7 +35,6 @@ export default {
   },
   data() {
     return {
-      category_str: "",
       isLoading: false,
     };
   },
@@ -50,23 +49,13 @@ export default {
         vm.isLoading = false;
       });
     },
-    getCommodityType() {
-      const vm = this;
-      //取得類型
-      vm.category_str = vm.$route.path;
-      vm.category_str = decodeURI(
-        vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
-      );
-    },
   },
   created() {
     this.getProducts();
-    this.getCommodityType();
   },
   watch: {
     $route(to, from) {
       this.path = this.$router.currentRoute.path;
-      this.getCommodityType();
     },
   },
 };

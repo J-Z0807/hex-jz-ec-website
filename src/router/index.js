@@ -21,6 +21,7 @@ import Commodity_detail from '@/components/pages/front/Commodity_detail';
 import CartsCheckout from '@/components/pages/front/CartsCheckout';
 import WriteInformation from '@/components/pages/front/WriteInformation';
 import checkout from '@/components/pages/front/Checkout';
+import order from '@/components/pages/front/order';
 
 Vue.use(Router);
 
@@ -125,6 +126,11 @@ export default new Router({
           path: 'checkout/:orderId',
           name: 'checkout',
           component: checkout,
+        },
+        {
+          path: 'order',
+          name: 'order',
+          component: order,
         }
       ]
     },

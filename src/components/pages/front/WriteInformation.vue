@@ -7,11 +7,7 @@
         <div class="scheduleStep">
           <div class="row no-gutters justify-content-between">
             <div class="col-4 px-0">
-              <h3 class="text-white">
-                <router-link class="nav-link" to="/carts_checkout">
-                  <span class="link">確認訂單</span>
-                </router-link>
-              </h3>
+              <h3 class="text-white">確認訂單</h3>
             </div>
             <div class="col-4 px-0 text-center">
               <h3 class="text-white">填寫資料</h3>
@@ -210,17 +206,29 @@
                           </div>
                         </validation-provider>
 
-                        <div class="form-group">
-                          <label for="comment">留言</label>
-                          <textarea
-                            name=""
-                            id="comment"
-                            class="form-control"
-                            cols="30"
-                            rows="10"
-                            v-model="form.message"
-                          ></textarea>
-                        </div>
+                        <validation-provider
+                          rules="required"
+                          v-slot="{ errors, classes }"
+                        >
+                          <div class="form-group">
+                            <!-- 輸入框 -->
+                            <label for="comment">留言</label
+                            ><span class="text-danger"> * </span>
+                            <textarea
+                              name=""
+                              id="comment"
+                              class="form-control"
+                              cols="30"
+                              rows="10"
+                              v-model="form.message"
+                              :class="classes"
+                            ></textarea>
+                            <!-- 錯誤訊息 -->
+                            <span class="invalid-feedback">{{
+                              errors[0]
+                            }}</span>
+                          </div>
+                        </validation-provider>
 
                         <div class="text-right">
                           <button class="btn btn-danger" :disabled="invalid">

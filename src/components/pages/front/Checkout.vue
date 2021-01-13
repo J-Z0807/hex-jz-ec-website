@@ -200,7 +200,6 @@ export default {
 
       vm.$http.get(url).then((response) => {
         vm.order = response.data.order;
-        console.log(vm.order);
         vm.isLoading = false;
       });
     },

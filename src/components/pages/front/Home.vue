@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <div
       id="carouselExampleIndicators"
       class="carousel slide"
@@ -80,31 +81,24 @@ export default {
   },
   data() {
     return {
-      category_str: "",
+      isLoading: false,
     };
   },
   methods: {
     getProducts(page = 1) {
       const vm = this;
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/products?page=${page}`;
+      vm.isLoading = true;
 
       vm.$http.get(url).then((response) => {
+        vm.isLoading = false;
         //商品處理
         vm.$bus.$emit("data:commodity", response.data.products);
       });
     },
-    getCommodityType() {
-      const vm = this;
-      //取得類型
-      vm.category_str = vm.$route.path;
-      vm.category_str = decodeURI(
-        vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
-      );
-    },
   },
   created() {
     this.getProducts();
-    this.getCommodityType();
   },
 };
 </script>

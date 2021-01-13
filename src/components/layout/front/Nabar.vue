@@ -67,7 +67,7 @@
           </ul>
 
           <ul class="navbar-nav h5 flex-wrap">
-            <li class="nav-item align-self-center">
+            <li class="nav-item align-self-center" title="查看收藏">
               <div class="dropdown">
                 <a
                   class="nav-link d-flex"
@@ -80,7 +80,7 @@
                   <div>
                     <i class="fas fa-heart"></i>
                     <span
-                      class="favorites_count"
+                      class="count"
                       id="favorites_count"
                       v-if="favorites.length != 0"
                       >{{ favorites.length }}</span
@@ -161,7 +161,7 @@
               </div>
             </li>
 
-            <li class="nav-item align-self-center">
+            <li class="nav-item align-self-center" title="查看購物車">
               <div class="dropdown">
                 <a
                   class="nav-link d-flex"
@@ -174,7 +174,7 @@
                   <div>
                     <i class="fas fa-shopping-cart"></i>
                     <span
-                      class="cart-count"
+                      class="count"
                       id="cart-count"
                       v-if="carts.length != 0"
                       >{{ carts.length }}</span
@@ -249,6 +249,12 @@
                 </div>
               </div>
             </li>
+
+            <li class="nav-item align-self-center" title="查看訂單">
+              <router-link to="/order" class="text-decoration-none">
+                <i class="far fa-list-alt text-dark nav-link"></i>
+              </router-link>
+            </li>
           </ul>
         </div>
       </div>
@@ -282,7 +288,7 @@ export default {
 
         //購物車為空時隱藏數量區塊
         if (vm.carts.length === 0) {
-          $(".cart-count").html("");
+          $("#cart-count").html("");
         }
       });
     },
@@ -306,14 +312,6 @@ export default {
       localStorage.setItem("favorite", JSON.stringify(vm.favorites)); //重新將覆蓋掉原本的
       vm.$bus.$emit("message:push", "取消收藏", "success");
       $("#favorites_count").text(parseInt($("#favorites_count").text()) - 1); //將收藏的現有數量-1
-    },
-    getCommodityType() {
-      const vm = this;
-      //取得類型
-      vm.category_str = vm.$route.path;
-      vm.category_str = decodeURI(
-        vm.category_str.substr(vm.category_str.lastIndexOf("/") + 1)
-      );
     },
     addtoCart(id, qty = 1) {
       const vm = this;
@@ -355,7 +353,7 @@ export default {
     const vm = this;
     vm.getCart();
     vm.getFavorite();
-    vm.getCommodityType();
+    vm.category_str = vm.$route.params.categoryName;
 
     vm.$bus.$on("ChangeFavorite", function () {
       vm.getFavorite();
@@ -367,8 +365,9 @@ export default {
   },
   watch: {
     $route(to, from) {
-      this.path = this.$router.currentRoute.path;
-      this.getCommodityType();
+      const vm = this;
+      vm.path = vm.$router.currentRoute.path;
+      vm.category_str = vm.$route.params.categoryName;
     },
   },
 };
@@ -377,14 +376,14 @@ export default {
 <style scoped lang="scss">
 .active {
   color: blue !important;
+  font-weight: bold;
 }
 
 li {
   margin-right: 10px;
 }
 
-.favorites_count,
-.cart-count {
+.count {
   background-color: red;
   border-radius: 50%;
   color: white;
