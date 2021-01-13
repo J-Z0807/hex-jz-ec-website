@@ -16,7 +16,7 @@
 
 # 未完成項目
 - 所有:
-- 1. RWD
+- 1. RWD(先做前台)
 
 ``` bash
 # install dependencies
