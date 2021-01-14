@@ -1,0 +1,50 @@
+@include mobile-L {
+
+  .footerInfo_area {
+    border-bottom: 2px dashed lightblue;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 30px;
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .about_we {
+    p {
+      text-align: left;
+      width: 65%;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: nowrap;
+    }
+  }
+}
+
+@include mobile-S {
+  .about_we {
+    p {
+      width: 100%;
+    }
+  }
+
+  .copyright-area {
+    display: block !important;
+  }
+
+  .community {
+    justify-content: center;
+
+    i {
+      font-size: 36px;
+      width: 100% !important;
+      text-align: center;
+    }
+
+  }
+}

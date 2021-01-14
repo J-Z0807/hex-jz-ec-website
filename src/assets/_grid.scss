@@ -1,0 +1,24 @@
+//以下為響應式設定
+@mixin tablet {
+  @media (max-width:768px) {
+    @content;
+  }
+}
+
+@mixin mobile-L {
+  @media (max-width:426px) {
+    @content;
+  }
+}
+
+@mixin mobile-M {
+  @media (max-width:376px) {
+    @content;
+  }
+}
+
+@mixin mobile-S {
+  @media (max-width:320px) {
+    @content;
+  }
+}

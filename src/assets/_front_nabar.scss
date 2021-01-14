@@ -1,0 +1,36 @@
+@include tablet {
+  .LOGO {
+    width: 130px;
+  }
+}
+
+@include mobile-L {
+  .LOGO {
+    width: 175px;
+  }
+
+  .nabar_classification_area {
+    .nav-item {
+      margin-right: 0 !important;
+      text-align: center;
+      border-bottom: 3px dashed lightblue;
+    }
+  }
+
+  .features_area {
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 10px;
+
+    li {
+      margin-right: 0 !important;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      left: -120px;
+      width: fit-content;
+    }
+  }
+
+}

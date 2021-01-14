@@ -4,7 +4,11 @@
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-white">
       <div class="container">
         <router-link to="../home">
-          <img src="../../../assets/logo.png" alt="LOGO" width="200"
+          <img
+            src="../../../assets/logo.png"
+            class="LOGO"
+            alt="LOGO"
+            width="200"
         /></router-link>
         <button
           class="navbar-toggler"
@@ -18,7 +22,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav m-auto h5 flex-wrap">
+          <ul class="navbar-nav m-auto h5 flex-wrap nabar_classification_area">
             <li class="nav-item">
               <router-link
                 class="nav-link"
@@ -66,7 +70,7 @@
             </li>
           </ul>
 
-          <ul class="navbar-nav h5 flex-wrap">
+          <ul class="navbar-nav h5 flex-wrap features_area">
             <li class="nav-item align-self-center" title="查看收藏">
               <div class="dropdown">
                 <a

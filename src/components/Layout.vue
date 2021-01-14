@@ -44,7 +44,7 @@ export default {
   padding: 0 12px;
   position: fixed;
   right: 30px;
-  bottom: 30px;
+  bottom: 60px;
   background: rgba(231, 23, 40, 0.8);
   transition: 0.3s;
   cursor: pointer;
