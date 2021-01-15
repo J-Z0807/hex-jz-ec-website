@@ -1,12 +1,12 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-white">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-dark p-0">
       <div class="container">
         <router-link to="../home">
           <img
             src="../../../assets/logo.png"
-            class="LOGO"
+            class="LOGO p-2"
             alt="LOGO"
             width="200"
         /></router-link>
@@ -98,7 +98,7 @@
                 >
                   <div>
                     <div
-                      class="overflow-auto"
+                      class="overflow-auto dropdown-menu-contanier"
                       style="max-height: 320px"
                       v-if="favorites.length > 0"
                     >
@@ -191,7 +191,10 @@
                   aria-labelledby="dropdownCartMenu"
                 >
                   <div v-if="carts.length > 0">
-                    <div class="overflow-auto" style="max-height: 300px">
+                    <div
+                      class="overflow-auto dropdown-menu-contanier"
+                      style="max-height: 320px"
+                    >
                       <table
                         class="table table-borderless"
                         style="min-width: 300px"
@@ -256,7 +259,7 @@
 
             <li class="nav-item align-self-center" title="查看訂單">
               <router-link to="/order" class="text-decoration-none">
-                <i class="far fa-list-alt text-dark nav-link"></i>
+                <i class="far fa-list-alt nav-link"></i>
               </router-link>
             </li>
           </ul>
@@ -399,7 +402,7 @@ li {
 }
 
 .navbar-light .navbar-nav .nav-link {
-  color: black;
+  color: white;
   transition: 0.3s;
 
   &:hover {

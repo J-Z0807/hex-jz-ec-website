@@ -3,7 +3,7 @@
     <loading :active.sync="isLoading"></loading>
     <div
       id="carouselExampleIndicators"
-      class="carousel slide"
+      class="carousel slide mt-5"
       data-ride="carousel"
     >
       <ol class="carousel-indicators">

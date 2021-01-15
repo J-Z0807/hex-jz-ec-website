@@ -372,7 +372,7 @@ export default {
   background-image: url("https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OXx8c2t5fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=60");
   background-size: cover;
   background-position: center;
-  margin-top: 70px;
+  margin-top: 60px;
   background-color: rgba(0, 0, 0, 0.1) !important;
   background-blend-mode: multiply !important;
 }

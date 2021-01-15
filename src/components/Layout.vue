@@ -4,7 +4,7 @@
       <Nabar />
     </header>
 
-    <div class="container-fluid px-0 mt-5">
+    <div class="container-fluid px-0">
       <main>
         <router-view></router-view>
       </main>
