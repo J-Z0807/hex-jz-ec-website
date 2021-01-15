@@ -1,0 +1,39 @@
+@include tablet {
+  .category-title {
+    font-size: 50px !important;
+  }
+}
+
+@include mobile-L {
+  .category-title {
+    font-size: 35px !important;
+  }
+
+  .category_banner {
+    height: 300px !important;
+  }
+
+  .breadmark {
+    width: 75% !important;
+  }
+}
+
+@include mobile-M {
+  .category-title {
+    font-size: 27px !important;
+  }
+
+  .category_banner {
+    height: 235px !important;
+  }
+
+  .breadcrumb {
+    margin-top: -30px;
+  }
+}
+
+@include mobile-S {
+  .breadmark {
+    width: 95% !important;
+  }
+}

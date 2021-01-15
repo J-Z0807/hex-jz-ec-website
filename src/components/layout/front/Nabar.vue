@@ -93,7 +93,7 @@
                 </a>
 
                 <div
-                  class="dropdown-menu dropdown-menu-right px-2"
+                  class="dropdown-menu dropdown-menu-right px-2 favorites-dropdown-menu"
                   aria-labelledby="dropdownFavoritesMenu"
                 >
                   <div>
@@ -187,7 +187,7 @@
                 </a>
 
                 <div
-                  class="dropdown-menu dropdown-menu-right px-2"
+                  class="dropdown-menu dropdown-menu-right px-2 cart-dropdown-menu"
                   aria-labelledby="dropdownCartMenu"
                 >
                   <div v-if="carts.length > 0">

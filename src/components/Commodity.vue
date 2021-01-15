@@ -10,7 +10,7 @@
 
       <div class="row">
         <div
-          class="card border-0 col-4 mb-4"
+          class="card border-0 col-lg-4 col-md-6 mb-4"
           v-for="item in commodity"
           :key="item.id"
           :class="{

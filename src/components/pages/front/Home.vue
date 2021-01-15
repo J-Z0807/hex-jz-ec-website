@@ -17,7 +17,7 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div
-            class="img-cover addMask"
+            class="img-cover addMask home_banner"
             style="
               background: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8c2hvcHBpbmd8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=60');
             "
@@ -31,7 +31,7 @@
 
         <div class="carousel-item">
           <div
-            class="img-cover addMask"
+            class="img-cover addMask home_banner"
             style="
               background: url('https://images.unsplash.com/photo-1511317559916-56d5ddb62563?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNob3BwaW5nfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=60');
             "

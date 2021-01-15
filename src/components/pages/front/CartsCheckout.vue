@@ -6,13 +6,13 @@
         <div class="scheduleStep">
           <div class="row no-gutters justify-content-between">
             <div class="col-4 px-0">
-              <h3 class="text-white">確認訂單</h3>
+              <h3 class="text-white step-text">確認訂單</h3>
             </div>
             <div class="col-4 px-0 text-center">
-              <h3 class="text-white">填寫資料</h3>
+              <h3 class="text-white step-text">填寫資料</h3>
             </div>
             <div class="col-4 px-0 text-right">
-              <h3 class="text-white">完成訂單</h3>
+              <h3 class="text-white step-text">完成訂單</h3>
             </div>
 
             <div class="col-12 text-center my-3">

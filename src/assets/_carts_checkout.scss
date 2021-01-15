@@ -1,0 +1,17 @@
+@include tablet {
+  .scheduleStep {
+    .step-text {
+      font-size: 20px;
+    }
+  }
+}
+
+@include mobile-S {
+  .scheduleStep {
+    width: 90% !important;
+
+    .step-text {
+      margin-right: 5px;
+    }
+  }
+}

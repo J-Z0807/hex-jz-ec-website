@@ -1,0 +1,10 @@
+@include mobile-L {
+  .main-title {
+    white-space: nowrap;
+
+    &:after,
+    &:before {
+      border: unset !important;
+    }
+  }
+}

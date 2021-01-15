@@ -2,8 +2,8 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <div class="product_detail content">
-      <div class="container-fluid bannerimg">
-        <h1 class="text-white title text-center py-4">
+      <div class="container-fluid bannerimg category_banner">
+        <h1 class="text-white category-title text-center py-4">
           好東西都在Quality Store
         </h1>
         <nav aria-label="breadcrumb" class="breadmark w-50 m-auto">
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.title {
+.category-title {
   font-size: 72px;
   font-family: cursive;
   position: absolute;

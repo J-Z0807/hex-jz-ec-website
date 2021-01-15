@@ -1,0 +1,15 @@
+@include mobile-L {
+  tbody p {
+    text-align: left !important;
+  }
+}
+
+@include mobile-S {
+  .product_title {
+    display: block;
+  }
+
+  .coupon-hint {
+    font-size: 12px !important;
+  }
+}

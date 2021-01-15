@@ -5,6 +5,12 @@
   }
 }
 
+@mixin mobile {
+  @media (max-width:767px) {
+    @content;
+  }
+}
+
 @mixin mobile-L {
   @media (max-width:426px) {
     @content;

@@ -4,7 +4,7 @@
   }
 }
 
-@include mobile-L {
+@include mobile {
   .LOGO {
     width: 175px;
   }
@@ -26,9 +26,15 @@
       margin-right: 0 !important;
     }
 
-    .dropdown-menu {
+    .favorites-dropdown-menu {
       position: absolute;
-      left: -120px;
+      left: -105px;
+      width: fit-content;
+    }
+
+    .cart-dropdown-menu {
+      position: absolute;
+      left: -150px;
       width: fit-content;
     }
   }

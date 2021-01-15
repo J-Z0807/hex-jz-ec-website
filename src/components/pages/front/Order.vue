@@ -39,7 +39,7 @@
           無任何訂單
         </h2>
 
-        <div class="pb-3" v-else>
+        <div class="pb-3 table-responsive" v-else>
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>

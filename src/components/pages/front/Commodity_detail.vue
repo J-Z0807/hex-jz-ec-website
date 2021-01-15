@@ -3,8 +3,10 @@
     <loading :active.sync="isLoading"></loading>
     <Alert />
 
-    <div class="container-fluid bannerimg">
-      <h1 class="text-white title text-center">好東西都在Quality Store</h1>
+    <div class="container-fluid bannerimg commodity_banner">
+      <h1 class="text-white title text-center commodity-title">
+        好東西都在Quality Store
+      </h1>
       <nav aria-label="breadcrumb" class="breadmark w-50 m-auto">
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
@@ -26,14 +28,14 @@
 
     <div class="container my-5">
       <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6">
           <div
             class="commodity_img img-cover ml-auto"
             :style="{ backgroundImage: `url(${product.imageUrl})` }"
           ></div>
         </div>
 
-        <div class="col-6">
+        <div class="col-lg-6">
           <ul class="product_area">
             <li class="mt-4 mb-2">
               <h3>

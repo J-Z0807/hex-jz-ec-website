@@ -1,0 +1,34 @@
+@include tablet {
+  .home_banner {
+    height: 58vh !important;
+
+    .title,
+    .content {
+      font-size: 2.5rem !important;
+      white-space: nowrap;
+    }
+  }
+
+  .goCommodityArea {
+    display: none;
+  }
+}
+
+@include mobile-L {
+  .home_banner {
+    height: 40vh !important;
+
+    .title,
+    .content {
+      font-size: 20px !important;
+      white-space: nowrap;
+    }
+  }
+
+  .carousel-control {
+    i {
+      font-size: 30px !important;
+      color: #ff274d !important;
+    }
+  }
+}

@@ -48,6 +48,7 @@ export default {
   background: rgba(231, 23, 40, 0.8);
   transition: 0.3s;
   cursor: pointer;
+  z-index: 1;
 
   &:hover {
     background: rgba(231, 23, 40, 0.3);

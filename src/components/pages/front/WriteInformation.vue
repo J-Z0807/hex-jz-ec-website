@@ -7,13 +7,13 @@
         <div class="scheduleStep">
           <div class="row no-gutters justify-content-between">
             <div class="col-4 px-0">
-              <h3 class="text-white">確認訂單</h3>
+              <h3 class="text-white step-text">確認訂單</h3>
             </div>
             <div class="col-4 px-0 text-center">
-              <h3 class="text-white">填寫資料</h3>
+              <h3 class="text-white step-text">填寫資料</h3>
             </div>
             <div class="col-4 px-0 text-right">
-              <h3 class="text-white">完成訂單</h3>
+              <h3 class="text-white step-text">完成訂單</h3>
             </div>
 
             <div class="col-12 text-center my-3">
@@ -44,7 +44,7 @@
 
       <div>
         <div class="my-4 row justify-content-center">
-          <table class="table border mr-5 col-5">
+          <table class="table border col-lg-5 col-md-8">
             <thead class="thead-dark">
               <tr>
                 <th colspan="3">訂單明細</th>
@@ -61,10 +61,13 @@
                   />
                 </td>
                 <td class="align-middle" style="width: auto">
-                  <b>{{ item.product.title }}</b>
+                  <b class="product_title">{{ item.product.title }}</b>
                   <span class="text-secondary">* {{ item.qty }}</span>
                   {{ item.product.unit }}
-                  <p class="text-success" v-if="item.coupon !== undefined">
+                  <p
+                    class="text-success coupon-hint"
+                    v-if="item.coupon !== undefined"
+                  >
                     優惠卷折價{{ item.coupon.percent }}%
                   </p>
                 </td>
@@ -102,7 +105,9 @@
             </tfoot>
           </table>
 
-          <table class="table border col-5">
+          <div class="col-lg-1"></div>
+
+          <table class="table border col-lg-5 col-md-8">
             <thead class="thead-dark">
               <tr>
                 <th colspan="3">訂單資訊</th>
