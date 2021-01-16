@@ -257,7 +257,7 @@
               </div>
             </li>
 
-            <li class="nav-item align-self-center" title="查看訂單">
+            <li class="nav-item align-self-center mr-0" title="查看訂單">
               <router-link to="/order" class="text-decoration-none">
                 <i class="far fa-list-alt nav-link"></i>
               </router-link>
@@ -387,7 +387,7 @@ export default {
 }
 
 li {
-  margin-right: 10px;
+  margin-right: 25px;
 }
 
 .count {
@@ -396,9 +396,9 @@ li {
   color: white;
   font-size: 14px;
   padding: 0 5px;
-  position: relative;
-  right: 15px;
-  top: -10px;
+  position: absolute;
+  right: 0px;
+  top: 3px;
 }
 
 .navbar-light .navbar-nav .nav-link {

@@ -17,14 +17,14 @@
     }
   }
 
+  .count {
+    right: -10px !important;
+  }
+
   .features_area {
     flex-direction: row;
     justify-content: center;
     padding-top: 10px;
-
-    li {
-      margin-right: 0 !important;
-    }
 
     .favorites-dropdown-menu {
       position: absolute;
