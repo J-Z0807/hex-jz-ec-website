@@ -2,7 +2,7 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-dark p-0">
-      <div class="container">
+      <div class="container d-sm-flex d-md-block d-lg-flex">
         <router-link to="../home">
           <img
             src="../../../assets/logo.png"

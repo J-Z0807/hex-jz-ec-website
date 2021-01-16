@@ -204,7 +204,7 @@ export default {
   background-size: cover;
   background-position: center;
   position: relative;
-  margin-top: 70px;
+  margin-top: 60px;
 }
 
 .breadcrumb .breadcrumb-item {
