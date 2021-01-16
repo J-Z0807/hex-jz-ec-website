@@ -319,6 +319,10 @@ export default {
       localStorage.setItem("favorite", JSON.stringify(vm.favorites)); //重新將覆蓋掉原本的
       vm.$bus.$emit("message:push", "取消收藏", "success");
       $("#favorites_count").text(parseInt($("#favorites_count").text()) - 1); //將收藏的現有數量-1
+
+      vm.$bus.$emit("ChangeFavorite");
+
+      vm.getFavorite();
     },
     addtoCart(id, qty = 1) {
       const vm = this;

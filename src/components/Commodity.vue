@@ -152,6 +152,7 @@ export default {
       $("#favorites_count").text(parseInt($("#favorites_count").text()) - 1); //將收藏的現有數量-1
 
       vm.$bus.$emit("ChangeFavorite");
+
       vm.getFavorite();
     },
     addtoCart(id, qty = 1) {
@@ -183,6 +184,10 @@ export default {
 
     vm.$bus.$on("data:commodity", function (commodity) {
       vm.commodity = commodity;
+      vm.getFavorite();
+    });
+
+    vm.$bus.$on("ChangeFavorite", function () {
       vm.getFavorite();
     });
 
